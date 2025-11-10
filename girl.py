@@ -639,17 +639,23 @@ class Girl:
                 right_double_tap: self.Run,
                 left_double_tap: self.Run,
                 right_down: self.Walk,
-                left_down: self.Walk
+                left_down: self.Walk,
+                q_down: self.Skill_1
             },
             self.Walk: {
                 right_double_tap: self.Run,
                 left_double_tap: self.Run,
                 right_up: self.IDLE,
-                left_up: self.IDLE
+                left_up: self.IDLE,
+                q_down: self.Skill_1
             },
             self.Run: {
                 right_up: self.IDLE,
-                left_up: self.IDLE
+                left_up: self.IDLE,
+                q_down: self.Skill_1
+            },
+            self.Skill_1: {
+                lambda e: True: self.IDLE
             },
             self.Jump: {},
             self.Fall: {}
