@@ -104,7 +104,10 @@ class Walk:
         self.girl = girl
 
     def enter(self, e):
-        pass
+        if right_down(e) or left_up(e):
+            self.girl.dir = self.girl.face_dir = 1
+        elif left_down(e) or right_up(e):
+            self.girl.dir = self.girl.face_dir = -1
 
     def exit(self):
         pass
