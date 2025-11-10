@@ -23,7 +23,99 @@ def left_up(e):
 
 class Idle:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        self.girl.dir = 0
+
+    def do(self):
+        pass
+
+    def exit(self):
+        pass
+
+    def draw(self):
+        pass
+
+class Walk:
+
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
+
 class Run:
+
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
+class Jump:
+
+class Fall:
+
+class Skill_1:
+
+class Skill_2:
+
+class Skill_3:
+
+class Skill_4:
+
+class Skill_5:
+
+class Skill_6:
+
+class Skill_7:
+
+class Skill_8:
+
+class Skill_9:
+
+class Skill_10:
+
+class Skill_11:
+
+class Skill_12:
+
+class Skill_13:
+
+class Skill_14:
+
+class Skill_15:
+
+class Skill_16:
+
+class Skill_17:
+
+class Skill_18:
+
+class Skill_19:
+
+class Skill_20:
+
+class Skill_21:
 
 class Girl:
 
