@@ -573,6 +573,7 @@ class Girl:
         self.images = {
             'idle': ResourceManager.load_image('idle', 'stand.png'),
             'walk': ResourceManager.load_image('walk', 'walk.png'),
+            'run': ResourceManager.load_image('run', 'run.png'),
         }
 
         self.x, self.y = 50, 120
