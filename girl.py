@@ -700,19 +700,22 @@ class Girl:
                 left_double_tap: self.RUN,
                 right_down: self.WALK,
                 left_down: self.WALK,
-                q_down: self.NORMAL_ATTACK
+                q_down: self.NORMAL_ATTACK,
+                w_down: self.STRIKE
             },
             self.WALK: {
                 right_double_tap: self.RUN,
                 left_double_tap: self.RUN,
                 right_up: self.IDLE,
                 left_up: self.IDLE,
-                q_down: self.NORMAL_ATTACK
+                q_down: self.NORMAL_ATTACK,
+                w_down: self.STRIKE
             },
             self.RUN: {
                 right_up: self.IDLE,
                 left_up: self.IDLE,
-                q_down: self.NORMAL_ATTACK
+                q_down: self.NORMAL_ATTACK,
+                w_down: self.STRIKE
             },
             self.NORMAL_ATTACK: {},
             self.STRIKE: {},
