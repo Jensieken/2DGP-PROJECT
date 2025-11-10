@@ -22,6 +22,29 @@ def left_down(e):
 def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
 
+class ResourceManager:
+    _images = {}\
+
+    def load_image(key, filename):
+        if key in ResourceManager._images:
+            return ResourceManager._images[key]
+
+        base_dir = os.path.dirname(__file__)
+        path = os.path.join(base_dir, 'girl_image', filename)
+        if not os.path.exists(path):
+            print(f'이미지 파일이 없습니다: {path}')
+            ResourceManager._images[key] = None
+            return None
+
+        try:
+            img = load_image(path)
+        except Exception as e:
+            print(f'이미지 로드 실패: {path} -> {e}')
+            img = None
+
+        ResourceManager._images[key] = img
+        return img
+
 class Idle:
 
     def __init__(self, girl):
@@ -37,7 +60,9 @@ class Idle:
         pass
 
     def draw(self):
-        pass
+        img = self.girl.images.get('idle')
+        if img:
+            img.draw(self.girl.x, self.girl.y)
 
 class Walk:
 
@@ -444,26 +469,9 @@ class Skill_21:
 class Girl:
 
     def __init__(self):
-        base_dir = os.path.dirname(__file__)
-        res_dir = os.path.join(base_dir, 'girl_image')
-
-        img_path = os.path.join(res_dir, 'stand.png')
-        if not os.path.exists(img_path):
-            print(f'이미지 파일이 없습니다: {img_path}')
-            self.image = None
-        else:
-            try:
-                self.image = load_image(img_path)
-            except Exception as e:
-                print(f'이미지 로드 실패: {img_path} -> {e}')
-                self.image = None
-
-        font_path = os.path.join(res_dir, 'ENCR10B.TTF')
-        try:
-            self.font = load_font(font_path, 16) if os.path.exists(font_path) else None
-        except Exception as e:
-            print(f'폰트 로드 실패: {font_path} -> {e}')
-            self.font = None
+        self.images = {
+            'idle': ResourceManager.load_image('idle', 'stand.png'),
+        }
 
         self.x, self.y = 0, 90
         self.frame = 0
