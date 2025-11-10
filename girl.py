@@ -590,10 +590,14 @@ class Girl:
 
         transitions = {
             self.IDLE: {
+                right_double_tap: self.Run,
+                left_double_tap: self.Run,
                 right_down: self.Walk,
                 left_down: self.Walk
             },
             self.Walk: {
+                right_double_tap: self.Run,
+                left_double_tap: self.Run,
                 right_up: self.IDLE,
                 left_up: self.IDLE
             },
