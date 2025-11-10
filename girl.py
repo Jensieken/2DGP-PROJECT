@@ -73,49 +73,385 @@ class Run:
         pass
 class Jump:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Fall:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Skill_1:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Skill_2:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Skill_3:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Skill_4:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Skill_5:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Skill_6:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Skill_7:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Skill_8:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Skill_9:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Skill_10:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Skill_11:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Skill_12:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Skill_13:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Skill_14:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Skill_15:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Skill_16:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Skill_17:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Skill_18:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Skill_19:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Skill_20:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Skill_21:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
 class Girl:
 
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        pass
+
+    def exit(self):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        pass
