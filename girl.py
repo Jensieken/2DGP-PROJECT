@@ -33,7 +33,7 @@ def right_double_tap(e):
     if e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT:
         current_time = get_time()
         if current_time - last_right_down_time < DOUBLE_TAP_TIME:
-            last_right_down_time = 0  # 리셋
+            last_right_down_time = 0
             return True
         last_right_down_time = current_time
     return False
@@ -43,7 +43,7 @@ def left_double_tap(e):
     if e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_LEFT:
         current_time = get_time()
         if current_time - last_left_down_time < DOUBLE_TAP_TIME:
-            last_left_down_time = 0  # 리셋
+            last_left_down_time = 0
             return True
         last_left_down_time = current_time
     return False
@@ -161,21 +161,43 @@ class Walk:
             img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w, frame_h)
 
 class Run:
+    IMAGE_KEY = 'run'
 
     def __init__(self, girl):
         self.girl = girl
 
     def enter(self, e):
-        pass
+        if right_double_tap(e) or right_down(e):
+            self.girl.dir = self.girl.face_dir = 1
+        elif left_double_tap(e) or left_down(e):
+            self.girl.dir = self.girl.face_dir = -1
+        self.girl.frame = 0.0
 
     def exit(self):
         pass
 
     def do(self):
-        pass
+        frame_count = 12
+        self.girl.frame = (self.girl.frame + frame_count * ACTION_PER_TIME * game_framework.frame_time) % frame_count
+        self.girl.x += self.girl.dir * RUN_SPEED_PPS * game_framework.frame_time
 
     def draw(self):
-        pass
+        key = self.IMAGE_KEY
+        img = self.girl.get_image(key)
+        if not img:
+            return
+
+        frame_count = 8
+        frame_w = img.w // frame_count
+        frame_h = img.h
+
+        frame = int(self.girl.frame) % frame_count
+
+        if self.girl.face_dir == 1:
+            img.clip_draw(frame * frame_w, 0, frame_w, frame_h, self.girl.x, self.girl.y)
+        else:
+            img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w,
+                                    frame_h)
 class Jump:
 
     def __init__(self, girl):
