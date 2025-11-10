@@ -445,14 +445,23 @@ class Girl:
         self.girl = girl
 
         self.font = load_font('ENCR10B.TTF', 16)
-    def enter(self, e):
-        pass
 
-    def exit(self):
-        pass
+        self.x, self.y = 0, 90
+        self.frame = 0
+        self.face_dir = 1
+        self.dir = 0
+        self.image = load_image('stand.png')
 
-    def do(self):
+
+    def update(self):
+        self.state_machine.update()
+
+    def handle_event(self, event):
+        self.state_machine.handle_state_event(('INPUT', event))
         pass
 
     def draw(self):
+        pass
+
+    def handle_collision(self, group, other):
         pass
