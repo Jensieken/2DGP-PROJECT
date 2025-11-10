@@ -1,6 +1,6 @@
 import os
 from pico2d import load_image, get_time, load_font, draw_rectangle, close_canvas
-from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT
+from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_q
 
 import game_world
 import game_framework
@@ -27,7 +27,11 @@ def left_down(e):
 def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
 
+def q_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_q
 
+def q_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_q
 
 def right_double_tap(e):
     global last_right_down_time
@@ -238,9 +242,11 @@ class Skill_1:
         self.girl = girl
 
     def enter(self, e):
-        pass
+        if q_down(e):
+            self.girl.dir = self.girl.face_dir = 1
+        self.girl.frame = 0.0
 
-    def exit(self):
+    def exit(self, e):
         pass
 
     def do(self):
