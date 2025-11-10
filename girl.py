@@ -187,7 +187,7 @@ class Run:
         if not img:
             return
 
-        frame_count = 8
+        frame_count = 12
         frame_w = img.w // frame_count
         frame_h = img.h
 
