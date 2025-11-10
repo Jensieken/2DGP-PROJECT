@@ -449,7 +449,7 @@ class Spine_Attack:
         self.timer = 0.0
         self.playing = True
 
-    def exit(self):
+    def exit(self, e):
         self.playing = False
 
     def do(self):
@@ -501,7 +501,7 @@ class Fast_Attack:
         self.timer = 0.0
         self.playing = True
 
-    def exit(self):
+    def exit(self, e):
         self.playing = False
 
     def do(self):
@@ -553,7 +553,7 @@ class Stab:
         self.timer = 0.0
         self.playing = True
 
-    def exit(self):
+    def exit(self, e):
         self.playing = False
 
     def do(self):
@@ -606,7 +606,7 @@ class Dash:
         self.timer = 0.0
         self.playing = True
 
-    def exit(self):
+    def exit(self, e):
         self.playing = False
 
     def do(self):
@@ -658,7 +658,7 @@ class Weak_Stab:
         self.timer = 0.0
         self.playing = True
 
-    def exit(self):
+    def exit(self, e):
         self.playing = False
 
     def do(self):
@@ -710,7 +710,7 @@ class Tumble:
         self.timer = 0.0
         self.playing = True
 
-    def exit(self):
+    def exit(self, e):
         self.playing = False
 
     def do(self):
@@ -762,7 +762,7 @@ class Spine:
         self.timer = 0.0
         self.playing = True
 
-    def exit(self):
+    def exit(self, e):
         self.playing = False
 
     def do(self):
@@ -814,7 +814,7 @@ class Spine2:
         self.timer = 0.0
         self.playing = True
 
-    def exit(self):
+    def exit(self, e):
         self.playing = False
 
     def do(self):
@@ -866,7 +866,7 @@ class Attack:
         self.timer = 0.0
         self.playing = True
 
-    def exit(self):
+    def exit(self, e):
         self.playing = False
 
     def do(self):
@@ -918,7 +918,7 @@ class Magic:
         self.timer = 0.0
         self.playing = True
 
-    def exit(self):
+    def exit(self, e):
         self.playing = False
 
     def do(self):
@@ -970,7 +970,7 @@ class Strong_Attack:
         self.timer = 0.0
         self.playing = True
 
-    def exit(self):
+    def exit(self, e):
         self.playing = False
 
     def do(self):
@@ -1035,7 +1035,7 @@ class Strong_Magic2:
             self.playing = False
             self.girl.state_machine.change_state(self.girl.IDLE)
 
-    def draw(self):
+    def draw(self, e):
         key = self.IMAGE_KEY
         img = self.girl.get_image(key)
         if not img:
@@ -1074,7 +1074,7 @@ class Strong_Spine:
         self.timer = 0.0
         self.playing = True
 
-    def exit(self):
+    def exit(self, e):
         self.playing = False
 
     def do(self):
@@ -1126,7 +1126,7 @@ class Strong_Magic3:
         self.timer = 0.0
         self.playing = True
 
-    def exit(self):
+    def exit(self, e):
         self.playing = False
 
     def do(self):
@@ -1178,7 +1178,7 @@ class Step:
         self.timer = 0.0
         self.playing = True
 
-    def exit(self):
+    def exit(self, e):
         self.playing = False
 
     def do(self):
@@ -1230,7 +1230,7 @@ class Cut:
         self.timer = 0.0
         self.playing = True
 
-    def exit(self):
+    def exit(self, e):
         self.playing = False
 
     def do(self):
@@ -1282,7 +1282,7 @@ class Cut2:
         self.timer = 0.0
         self.playing = True
 
-    def exit(self):
+    def exit(self, e):
         self.playing = False
 
     def do(self):
@@ -1381,7 +1381,24 @@ class Girl:
                 right_down: self.WALK,
                 left_down: self.WALK,
                 q_down: self.NORMAL_ATTACK,
-                w_down: self.STRIKE
+                w_down: self.SPINE_ATTACK,
+                e_down: self.FAST_ATTACK,
+                r_down: self.STAB,
+                t_down: self.DASH,
+                y_down: self.WEAK_STAB,
+                a_down: self.TUMBLE,
+                s_down: self.SPINE,
+                d_down: self.SPINE2,
+                f_down: self.ATTACK,
+                g_down: self.MAGIC,
+                h_down: self.STRIKE,
+                z_down: self.STRONG_ATTACK,
+                x_down: self.STRONG_MAGIC2,
+                c_down: self.STRONG_SPINE,
+                v_down: self.STRONG_MAGIC3,
+                b_down: self.STEP,
+                n_down: self.CUT,
+                m_down: self.CUT2
             },
             self.WALK: {
                 right_double_tap: self.RUN,
@@ -1389,7 +1406,24 @@ class Girl:
                 right_up: self.IDLE,
                 left_up: self.IDLE,
                 q_down: self.NORMAL_ATTACK,
-                w_down: self.STRIKE
+                w_down: self.STRIKE,
+                e_down: self.FAST_ATTACK,
+                r_down: self.STAB,
+                t_down: self.DASH,
+                y_down: self.WEAK_STAB,
+                a_down: self.TUMBLE,
+                s_down: self.SPINE,
+                d_down: self.SPINE2,
+                f_down: self.ATTACK,
+                g_down: self.MAGIC,
+                h_down: self.STRIKE,
+                z_down: self.STRONG_ATTACK,
+                x_down: self.STRONG_MAGIC2,
+                c_down: self.STRONG_SPINE,
+                v_down: self.STRONG_MAGIC3,
+                b_down: self.STEP,
+                n_down: self.CUT,
+                m_down: self.CUT2
             },
             self.RUN: {
                 right_up: self.IDLE,
@@ -1399,6 +1433,22 @@ class Girl:
             },
             self.NORMAL_ATTACK: {},
             self.STRIKE: {},
+            self.FAST_ATTACK: {},
+            self.STAB: {},
+            self.DASH: {},
+            self.WEAK_STAB: {},
+            self.TUMBLE: {},
+            self.SPINE: {},
+            self.SPINE2: {},
+            self.ATTACK: {},
+            self.MAGIC: {},
+            self.STRONG_ATTACK: {},
+            self.STRONG_MAGIC2: {},
+            self.STRONG_SPINE: {},
+            self.STRONG_MAGIC3: {},
+            self.STEP: {},
+            self.CUT: {},
+            self.CUT2: {},
             self.JUMP: {},
             self.FALL: {}
         }
