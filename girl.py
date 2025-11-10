@@ -429,6 +429,7 @@ class Strike:
                                     frame_h)
 
 class Spine_Attack:
+    IMAGE_KEY = 'spine_attack'
 
     def __init__(self, girl):
         self.girl = girl
@@ -452,7 +453,7 @@ class Spine_Attack:
         self.playing = False
 
     def do(self):
-        frame_count =
+        frame_count = 7
         if self.playing:
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
@@ -467,7 +468,7 @@ class Spine_Attack:
         if not img:
             return
 
-        frame_count =
+        frame_count = 7
         frame_w = img.w // frame_count
         frame_h = img.h
 
@@ -480,6 +481,7 @@ class Spine_Attack:
                                     frame_h)
 
 class Fast_Attack:
+    IMAGE_KEY = 'fast_attack'
 
     def __init__(self, girl):
         self.girl = girl
@@ -503,7 +505,7 @@ class Fast_Attack:
         self.playing = False
 
     def do(self):
-        frame_count =
+        frame_count = 3
         if self.playing:
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
@@ -518,7 +520,7 @@ class Fast_Attack:
         if not img:
             return
 
-        frame_count =
+        frame_count = 3
         frame_w = img.w // frame_count
         frame_h = img.h
 
@@ -531,6 +533,7 @@ class Fast_Attack:
                                     frame_h)
 
 class Stab:
+    IMAGE_KEY = 'stab'
 
     def __init__(self, girl):
         self.girl = girl
@@ -554,7 +557,7 @@ class Stab:
         self.playing = False
 
     def do(self):
-        frame_count =
+        frame_count = 10
         if self.playing:
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
@@ -569,7 +572,7 @@ class Stab:
         if not img:
             return
 
-        frame_count =
+        frame_count = 10
         frame_w = img.w // frame_count
         frame_h = img.h
 
@@ -583,6 +586,7 @@ class Stab:
 
 
 class Dash:
+    IMAGE_KEY = 'dash'
 
     def __init__(self, girl):
         self.girl = girl
@@ -606,7 +610,7 @@ class Dash:
         self.playing = False
 
     def do(self):
-        frame_count =
+        frame_count = 3
         if self.playing:
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
@@ -621,7 +625,7 @@ class Dash:
         if not img:
             return
 
-        frame_count =
+        frame_count = 3
         frame_w = img.w // frame_count
         frame_h = img.h
 
@@ -634,6 +638,7 @@ class Dash:
                                     frame_h)
 
 class Weak_Stab:
+    IMAGE_KEY = 'weak_stab'
 
     def __init__(self, girl):
         self.girl = girl
@@ -657,7 +662,7 @@ class Weak_Stab:
         self.playing = False
 
     def do(self):
-        frame_count =
+        frame_count = 6
         if self.playing:
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
@@ -672,7 +677,7 @@ class Weak_Stab:
         if not img:
             return
 
-        frame_count =
+        frame_count = 6
         frame_w = img.w // frame_count
         frame_h = img.h
 
@@ -685,6 +690,7 @@ class Weak_Stab:
                                     frame_h)
 
 class Tumble:
+    IMAGE_KEY = 'tumble'
 
     def __init__(self, girl):
         self.girl = girl
@@ -708,7 +714,7 @@ class Tumble:
         self.playing = False
 
     def do(self):
-        frame_count =
+        frame_count = 4
         if self.playing:
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
@@ -723,7 +729,7 @@ class Tumble:
         if not img:
             return
 
-        frame_count =
+        frame_count = 4
         frame_w = img.w // frame_count
         frame_h = img.h
 
@@ -736,6 +742,7 @@ class Tumble:
                                     frame_h)
 
 class Spine:
+    IMAGE_KEY = 'spine'
 
     def __init__(self, girl):
         self.girl = girl
@@ -759,7 +766,7 @@ class Spine:
         self.playing = False
 
     def do(self):
-        frame_count =
+        frame_count = 8
         if self.playing:
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
@@ -774,7 +781,7 @@ class Spine:
         if not img:
             return
 
-        frame_count =
+        frame_count = 8
         frame_w = img.w // frame_count
         frame_h = img.h
 
@@ -787,6 +794,7 @@ class Spine:
                                     frame_h)
 
 class Spine2:
+    IMAGE_KEY = 'spine2'
 
     def __init__(self, girl):
         self.girl = girl
@@ -810,7 +818,7 @@ class Spine2:
         self.playing = False
 
     def do(self):
-        frame_count =
+        frame_count = 7
         if self.playing:
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
@@ -825,7 +833,7 @@ class Spine2:
         if not img:
             return
 
-        frame_count =
+        frame_count = 7
         frame_w = img.w // frame_count
         frame_h = img.h
 
@@ -838,6 +846,7 @@ class Spine2:
                                     frame_h)
 
 class Attack:
+    IMAGE_KEY = 'attack'
 
     def __init__(self, girl):
         self.girl = girl
@@ -861,7 +870,7 @@ class Attack:
         self.playing = False
 
     def do(self):
-        frame_count =
+        frame_count = 11
         if self.playing:
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
@@ -876,7 +885,7 @@ class Attack:
         if not img:
             return
 
-        frame_count =
+        frame_count = 11
         frame_w = img.w // frame_count
         frame_h = img.h
 
@@ -889,6 +898,7 @@ class Attack:
                                     frame_h)
 
 class Magic:
+    IMAGE_KEY = 'magic'
 
     def __init__(self, girl):
         self.girl = girl
@@ -912,7 +922,7 @@ class Magic:
         self.playing = False
 
     def do(self):
-        frame_count =
+        frame_count = 4
         if self.playing:
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
@@ -927,7 +937,7 @@ class Magic:
         if not img:
             return
 
-        frame_count =
+        frame_count = 4
         frame_w = img.w // frame_count
         frame_h = img.h
 
@@ -940,6 +950,7 @@ class Magic:
                                     frame_h)
 
 class Strong_Attack:
+    IMAGE_KEY = 'strong_attack'
 
     def __init__(self, girl):
         self.girl = girl
@@ -963,7 +974,7 @@ class Strong_Attack:
         self.playing = False
 
     def do(self):
-        frame_count =
+        frame_count = 7
         if self.playing:
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
@@ -978,7 +989,7 @@ class Strong_Attack:
         if not img:
             return
 
-        frame_count =
+        frame_count = 7
         frame_w = img.w // frame_count
         frame_h = img.h
 
@@ -991,6 +1002,7 @@ class Strong_Attack:
                                     frame_h)
 
 class Strong_Magic2:
+    IMAGE_KEY = 'strong_magic2'
 
     def __init__(self, girl):
         self.girl = girl
@@ -1014,7 +1026,7 @@ class Strong_Magic2:
         self.playing = False
 
     def do(self):
-        frame_count =
+        frame_count = 8
         if self.playing:
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
@@ -1029,7 +1041,7 @@ class Strong_Magic2:
         if not img:
             return
 
-        frame_count =
+        frame_count = 8
         frame_w = img.w // frame_count
         frame_h = img.h
 
@@ -1042,6 +1054,7 @@ class Strong_Magic2:
                                     frame_h)
 
 class Strong_Spine:
+    IMAGE_KEY = 'strong_spine'
 
     def __init__(self, girl):
         self.girl = girl
@@ -1065,7 +1078,7 @@ class Strong_Spine:
         self.playing = False
 
     def do(self):
-        frame_count =
+        frame_count = 9
         if self.playing:
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
@@ -1080,7 +1093,7 @@ class Strong_Spine:
         if not img:
             return
 
-        frame_count =
+        frame_count = 9
         frame_w = img.w // frame_count
         frame_h = img.h
 
@@ -1093,6 +1106,7 @@ class Strong_Spine:
                                     frame_h)
 
 class Strong_Magic3:
+    IMAGE_KEY = 'strong_magic3'
 
     def __init__(self, girl):
         self.girl = girl
@@ -1116,7 +1130,7 @@ class Strong_Magic3:
         self.playing = False
 
     def do(self):
-        frame_count =
+        frame_count = 13
         if self.playing:
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
@@ -1131,7 +1145,7 @@ class Strong_Magic3:
         if not img:
             return
 
-        frame_count =
+        frame_count = 13
         frame_w = img.w // frame_count
         frame_h = img.h
 
@@ -1144,6 +1158,7 @@ class Strong_Magic3:
                                     frame_h)
 
 class Step:
+    IMAGE_KEY = 'step'
 
     def __init__(self, girl):
         self.girl = girl
@@ -1167,7 +1182,7 @@ class Step:
         self.playing = False
 
     def do(self):
-        frame_count =
+        frame_count = 10
         if self.playing:
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
@@ -1182,7 +1197,7 @@ class Step:
         if not img:
             return
 
-        frame_count =
+        frame_count = 10
         frame_w = img.w // frame_count
         frame_h = img.h
 
@@ -1195,6 +1210,7 @@ class Step:
                                     frame_h)
 
 class Cut:
+    IMAGE_KEY = 'cut'
 
     def __init__(self, girl):
         self.girl = girl
@@ -1218,7 +1234,7 @@ class Cut:
         self.playing = False
 
     def do(self):
-        frame_count =
+        frame_count = 2
         if self.playing:
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
@@ -1233,7 +1249,7 @@ class Cut:
         if not img:
             return
 
-        frame_count =
+        frame_count = 2
         frame_w = img.w // frame_count
         frame_h = img.h
 
@@ -1246,6 +1262,7 @@ class Cut:
                                     frame_h)
 
 class Cut2:
+    IMAGE_KEY = 'cut2'
 
     def __init__(self, girl):
         self.girl = girl
@@ -1269,7 +1286,7 @@ class Cut2:
         self.playing = False
 
     def do(self):
-        frame_count =
+        frame_count = 2
         if self.playing:
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
@@ -1284,7 +1301,7 @@ class Cut2:
         if not img:
             return
 
-        frame_count =
+        frame_count = 2
         frame_w = img.w // frame_count
         frame_h = img.h
 
