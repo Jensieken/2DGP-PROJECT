@@ -1,6 +1,6 @@
 import os
 from pico2d import load_image, get_time, load_font, draw_rectangle, close_canvas
-from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_q
+from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_q, SDLK_w
 
 import game_world
 import game_framework
@@ -32,6 +32,12 @@ def q_down(e):
 
 def q_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_q
+
+def w_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_w
+
+def w_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_w
 
 def right_double_tap(e):
     global last_right_down_time
@@ -288,12 +294,25 @@ class Normal_Attack:
             img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w,
                                     frame_h)
 class Strike:
+    IMAGE_KEY = 'strike'
 
     def __init__(self, girl):
         self.girl = girl
+        self.timer = 0.0
+        self.playing = False
 
     def enter(self, e):
-        pass
+        if e and e[0] == 'INPUT':
+            event = e[1]
+            if event.key == SDLK_RIGHT:
+                self.girl.face_dir = 1
+            elif event.key == SDLK_LEFT:
+                self.girl.face_dir = -1
+
+        self.girl.dir = 0
+        self.girl.frame = 0.0
+        self.timer = 0.0
+        self.playing = True
 
     def exit(self):
         pass
