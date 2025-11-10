@@ -99,6 +99,7 @@ class Idle:
             img.draw(self.girl.x, self.girl.y)
 
 class Walk:
+    IMAGE_KEY = 'walk'
 
     def __init__(self, girl):
         self.girl = girl
@@ -108,12 +109,15 @@ class Walk:
             self.girl.dir = self.girl.face_dir = 1
         elif left_down(e) or right_up(e):
             self.girl.dir = self.girl.face_dir = -1
+        self.girl.frame = 0.0
 
     def exit(self):
         pass
 
     def do(self):
-        pass
+        frame_count = self.girl.get_frame_count(self.IMAGE_KEY)
+        self.girl.frame = (self.girl.frame + frame_count * ACTION_PER_TIME * game_framework.frame_time) % frame_count
+        self.girl.x += self.girl.dir * RUN_SPEED_PPS * game_framework.frame_time
 
     def draw(self):
         pass
