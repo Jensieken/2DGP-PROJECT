@@ -242,8 +242,14 @@ class Normal_Attack:
         self.timer = 0.0
 
     def enter(self, e):
-        if q_down(e):
-            self.girl.dir = self.girl.face_dir = 1
+        if e and e[0] == 'INPUT':
+            event = e[1]
+            if event.key == SDLK_RIGHT:
+                self.girl.face_dir = 1
+            elif event.key == SDLK_LEFT:
+                self.girl.face_dir = -1
+
+        self.girl.dir = 0
         self.girl.frame = 0.0
         self.timer = 0.0
 
