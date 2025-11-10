@@ -71,7 +71,7 @@ class Idle:
         self.girl.frame = 0.0
 
     def do(self):
-        frame_count = self.girl.get_frame_count(self.IMAGE_KEY)
+        frame_count = 12
         self.girl.frame = (self.girl.frame + frame_count * ACTION_PER_TIME * game_framework.frame_time) % frame_count
 
     def exit(self):
@@ -83,20 +83,18 @@ class Idle:
         if not img:
             return
 
-        frame_count = self.girl.get_frame_count(key)
-        src_w = getattr(img, 'w', None)
-        src_h = getattr(img, 'h', None)
-        frame_index = int(self.girl.frame) % frame_count
+        frame_count = 12
+        frame_w = img.w // frame_count
+        frame_h = img.h
 
-        try:
-            if src_w and src_h and frame_count > 1:
-                frame_w = src_w // frame_count
-                img.clip_draw(frame_index * frame_w, 0, frame_w, src_h,
-                              self.girl.x, self.girl.y, frame_w, src_h)
-            else:
-                img.draw(self.girl.x, self.girl.y)
-        except Exception:
-            img.draw(self.girl.x, self.girl.y)
+        frame = int(self.girl.frame) % frame_count
+
+        if self.girl.face_dir == 1:
+            img.clip_draw(frame * frame_w, 0, frame_w, frame_h, self.girl.x, self.girl.y)
+        else:
+            img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y)
+
+
 
 class Walk:
     IMAGE_KEY = 'walk'
@@ -120,7 +118,25 @@ class Walk:
         self.girl.x += self.girl.dir * RUN_SPEED_PPS * game_framework.frame_time
 
     def draw(self):
-        pass
+        key = self.IMAGE_KEY
+        img = self.girl.get_image(key)
+        if not img:
+            return
+
+        frame_count = self.girl.get_frame_count(key)
+        src_w = getattr(img, 'w', None)
+        src_h = getattr(img, 'h', None)
+        frame_index = int(self.girl.frame) % frame_count
+
+        try:
+            if src_w and src_h and frame_count > 1:
+                frame_w = src_w // frame_count
+                img.clip_draw(frame_index * frame_w, 0, frame_w, src_h,
+                              self.girl.x, self.girl.y, frame_w, src_h)
+            else:
+                img.draw(self.girl.x, self.girl.y)
+        except Exception:
+            img.draw(self.girl.x, self.girl.y)
 
 class Run:
 
@@ -515,11 +531,6 @@ class Girl:
             'walk': ResourceManager.load_image('walk', 'walk.png'),
         }
 
-        self.frames = {
-            'idle': 12,
-            'walk': 8,
-        }
-
         self.x, self.y = 50, 120
         self.frame = 0
         self.face_dir = 1
@@ -547,9 +558,6 @@ class Girl:
         }
 
         self.state_machine = StateMachine(self.IDLE, transitions)
-
-    def get_frame_count(self, key):
-        return self.frames.get(key, 1)
 
     def get_image(self, key):
         return self.images.get(key)
