@@ -314,7 +314,7 @@ class Strike:
         self.timer = 0.0
         self.playing = True
 
-    def exit(self):
+    def exit(self, e):
         self.playing = False
 
     def do(self):
