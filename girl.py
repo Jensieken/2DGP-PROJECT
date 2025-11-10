@@ -235,8 +235,8 @@ class Fall:
 
     def draw(self):
         pass
-class Skill_1:
-    IMAGE_KEY = 'skill1'
+class Normal_Attack:
+    IMAGE_KEY = 'normal_attack'
 
     def __init__(self, girl):
         self.girl = girl
@@ -604,7 +604,7 @@ class Girl:
             'idle': ResourceManager.load_image('idle', 'stand.png'),
             'walk': ResourceManager.load_image('walk', 'walk.png'),
             'run': ResourceManager.load_image('run', 'run.png'),
-            'skill_1': ResourceManager.load_image('normal_attack', 'normal_attack.png'),
+            'normal_attack': ResourceManager.load_image('normal_attack', 'normal_attack.png'),
             'skill_2': ResourceManager.load_image('skill2', 'skill2.png'),
             'skill_3': ResourceManager.load_image('skill3', 'skill3.png'),
             'skill_4': ResourceManager.load_image('skill4', 'skill4.png'),
@@ -635,7 +635,7 @@ class Girl:
         self.IDLE = Idle(self)
         self.WALK = Walk(self)
         self.RUN = Run(self)
-        self.SKILL_1 = Skill_1(self)
+        self.NORMAL_ATTACK = Normal_Attack(self)
         self.JUMP = Jump(self)
         self.FALL = Fall(self)
 
@@ -646,21 +646,21 @@ class Girl:
                 left_double_tap: self.RUN,
                 right_down: self.WALK,
                 left_down: self.WALK,
-                q_down: self.SKILL_1
+                q_down: self.NORMAL_ATTACK
             },
             self.WALK: {
                 right_double_tap: self.RUN,
                 left_double_tap: self.RUN,
                 right_up: self.IDLE,
                 left_up: self.IDLE,
-                q_down: self.SKILL_1
+                q_down: self.NORMAL_ATTACK
             },
             self.RUN: {
                 right_up: self.IDLE,
                 left_up: self.IDLE,
-                q_down: self.SKILL_1
+                q_down: self.NORMAL_ATTACK
             },
-            self.SKILL_1: {
+            self.NORMAL_ATTACK: {
                 lambda e: True: self.IDLE
             },
             self.JUMP: {},
