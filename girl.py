@@ -505,10 +505,12 @@ class Girl:
     def __init__(self):
         self.images = {
             'idle': ResourceManager.load_image('idle', 'stand.png'),
+            'walk': ResourceManager.load_image('walk', 'walk.png'),
         }
 
         self.frames = {
             'idle': 12,
+            'walk': 8,
         }
 
         self.x, self.y = 50, 120
