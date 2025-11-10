@@ -444,6 +444,7 @@ class Girl:
     def __init__(self, girl):
         self.girl = girl
 
+        self.font = load_font('ENCR10B.TTF', 16)
     def enter(self, e):
         pass
 
