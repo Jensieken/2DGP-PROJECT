@@ -36,7 +36,6 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-FRAMES_PER_ACTION = 8
 
 class ResourceManager:
     _images = {}\
@@ -62,22 +61,41 @@ class ResourceManager:
         return img
 
 class Idle:
+    IMAGE_KEY = 'idle'
 
     def __init__(self, girl):
         self.girl = girl
 
     def enter(self, e):
         self.girl.dir = 0
+        self.girl.frame = 0.0
 
     def do(self):
-        self.girl.frame = (self.girl.frame + 1) % 12
+        frame_count = self.girl.get_frame_count(self.IMAGE_KEY)
+        self.girl.frame = (self.girl.frame + frame_count * ACTION_PER_TIME * game_framework.frame_time) % frame_count
 
     def exit(self):
         pass
 
     def draw(self):
-        img = self.girl.images.get('idle')
-        if img:
+        key = self.IMAGE_KEY
+        img = self.girl.get_image(key)
+        if not img:
+            return
+
+        frame_count = self.girl.get_frame_count(key)
+        src_w = getattr(img, 'w', None)
+        src_h = getattr(img, 'h', None)
+        frame_index = int(self.girl.frame) % frame_count
+
+        try:
+            if src_w and src_h and frame_count > 1:
+                frame_w = src_w // frame_count
+                img.clip_draw(frame_index * frame_w, 0, frame_w, src_h,
+                              self.girl.x, self.girl.y, frame_w, src_h)
+            else:
+                img.draw(self.girl.x, self.girl.y)
+        except Exception:
             img.draw(self.girl.x, self.girl.y)
 
 class Walk:
@@ -489,6 +507,10 @@ class Girl:
             'idle': ResourceManager.load_image('idle', 'stand.png'),
         }
 
+        self.frames = {
+            'idle': 12,
+        }
+
         self.x, self.y = 0, 90
         self.frame = 0
         self.face_dir = 1
@@ -516,6 +538,12 @@ class Girl:
         }
 
         self.state_machine = StateMachine(self.IDLE, transitions)
+
+    def get_frame_count(self, key):
+        return self.frames.get(key, 1)
+
+    def get_image(self, key):
+        return self.images.get(key)
 
     def update(self):
         self.state_machine.update()
