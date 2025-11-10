@@ -49,13 +49,13 @@ def left_double_tap(e):
     return False
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
-WALK_SPEED_KMPH = 20.0  # Km / Hour
+WALK_SPEED_KMPH = 40.0  # Km / Hour
 WALK_SPEED_MPM = (WALK_SPEED_KMPH * 1000.0 / 60.0)
 WALK_SPEED_MPS = (WALK_SPEED_MPM / 60.0)
 WALK_SPEED_PPS = (WALK_SPEED_MPS * PIXEL_PER_METER)
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
-RUN_SPEED_KMPH = 40.0
+RUN_SPEED_KMPH = 60.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -141,7 +141,7 @@ class Walk:
     def do(self):
         frame_count = 8
         self.girl.frame = (self.girl.frame + frame_count * ACTION_PER_TIME * game_framework.frame_time) % frame_count
-        self.girl.x += self.girl.dir * RUN_SPEED_PPS * game_framework.frame_time
+        self.girl.x += self.girl.dir * WALK_SPEED_PPS * game_framework.frame_time
 
     def draw(self):
         key = self.IMAGE_KEY
