@@ -628,37 +628,38 @@ class Girl:
         self.dir = 0
 
         self.IDLE = Idle(self)
-        self.Walk = Walk(self)
-        self.Run = Run(self)
-        self.Jump = Jump(self)
-        self.Fall = Fall(self)
+        self.WALK = Walk(self)
+        self.RUN = Run(self)
+        self.SKILL_1 = Skill_1(self)
+        self.JUMP = Jump(self)
+        self.FALL = Fall(self)
 
 
         transitions = {
             self.IDLE: {
-                right_double_tap: self.Run,
-                left_double_tap: self.Run,
-                right_down: self.Walk,
-                left_down: self.Walk,
-                q_down: self.Skill_1
+                right_double_tap: self.RUN,
+                left_double_tap: self.RUN,
+                right_down: self.WALK,
+                left_down: self.WALK,
+                q_down: self.SKILL_1
             },
-            self.Walk: {
-                right_double_tap: self.Run,
-                left_double_tap: self.Run,
+            self.WALK: {
+                right_double_tap: self.RUN,
+                left_double_tap: self.RUN,
                 right_up: self.IDLE,
                 left_up: self.IDLE,
-                q_down: self.Skill_1
+                q_down: self.SKILL_1
             },
-            self.Run: {
+            self.RUN: {
                 right_up: self.IDLE,
                 left_up: self.IDLE,
-                q_down: self.Skill_1
+                q_down: self.SKILL_1
             },
-            self.Skill_1: {
+            self.SKILL_1: {
                 lambda e: True: self.IDLE
             },
-            self.Jump: {},
-            self.Fall: {}
+            self.JUMP: {},
+            self.FALL: {}
         }
 
         self.state_machine = StateMachine(self.IDLE, transitions)
