@@ -1,3 +1,4 @@
+import os
 from pico2d import load_image, get_time, load_font, draw_rectangle, close_canvas
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT
 
@@ -443,9 +444,26 @@ class Skill_21:
 class Girl:
 
     def __init__(self):
+        base_dir = os.path.dirname(__file__)
+        res_dir = os.path.join(base_dir, 'girl_image')
 
-        self.font = load_font('ENCR10B.TTF', 16)
-        self.image = load_image('stand.png')
+        img_path = os.path.join(res_dir, 'stand.png')
+        if not os.path.exists(img_path):
+            print(f'이미지 파일이 없습니다: {img_path}')
+            self.image = None
+        else:
+            try:
+                self.image = load_image(img_path)
+            except Exception as e:
+                print(f'이미지 로드 실패: {img_path} -> {e}')
+                self.image = None
+
+        font_path = os.path.join(res_dir, 'ENCR10B.TTF')
+        try:
+            self.font = load_font(font_path, 16) if os.path.exists(font_path) else None
+        except Exception as e:
+            print(f'폰트 로드 실패: {font_path} -> {e}')
+            self.font = None
 
         self.x, self.y = 0, 90
         self.frame = 0
