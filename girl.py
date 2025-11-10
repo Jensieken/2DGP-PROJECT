@@ -439,19 +439,41 @@ class Skill_21:
 
     def draw(self):
         pass
+
 class Girl:
 
-    def __init__(self, girl):
-        self.girl = girl
+    def __init__(self):
 
         self.font = load_font('ENCR10B.TTF', 16)
+        self.image = load_image('stand.png')
 
         self.x, self.y = 0, 90
         self.frame = 0
         self.face_dir = 1
         self.dir = 0
-        self.image = load_image('stand.png')
 
+
+        self.IDLE = Idle(self)
+        self.Walk = Walk(self)
+        self.Run = Run(self)
+        self.Jump = Jump(self)
+        self.Fall = Fall(self)
+
+        transitions = {
+            self.IDLE: {
+                right_down: self.Walk,
+                left_down: self.Walk
+            },
+            self.Walk: {
+                right_up: self.IDLE,
+                left_up: self.IDLE
+            },
+            self.Run: {},
+            self.Jump: {},
+            self.Fall: {}
+        }
+
+        self.state_machine = StateMachine(self.IDLE, transitions)
 
     def update(self):
         self.state_machine.update()
