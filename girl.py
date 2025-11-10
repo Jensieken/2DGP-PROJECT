@@ -54,7 +54,7 @@ class Idle:
         self.girl.dir = 0
 
     def do(self):
-        pass
+        self.girl.frame = (self.girl.frame + 1) % 8
 
     def exit(self):
         pass
@@ -509,7 +509,7 @@ class Girl:
         pass
 
     def draw(self):
-        pass
+        self.state_machine.draw()
 
     def handle_collision(self, group, other):
         pass
