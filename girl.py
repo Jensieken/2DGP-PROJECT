@@ -601,7 +601,10 @@ class Girl:
                 right_up: self.IDLE,
                 left_up: self.IDLE
             },
-            self.Run: {},
+            self.Run: {
+                right_up: self.IDLE,
+                left_up: self.IDLE
+            },
             self.Jump: {},
             self.Fall: {}
         }
