@@ -511,7 +511,7 @@ class Girl:
             'idle': 12,
         }
 
-        self.x, self.y = 0, 90
+        self.x, self.y = 50, 120
         self.frame = 0
         self.face_dir = 1
         self.dir = 0
