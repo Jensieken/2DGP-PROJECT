@@ -173,7 +173,7 @@ class Run:
             self.girl.dir = self.girl.face_dir = -1
         self.girl.frame = 0.0
 
-    def exit(self):
+    def exit(self, e):
         pass
 
     def do(self):
@@ -598,10 +598,14 @@ class Girl:
             self.Walk: {
                 right_double_tap: self.Run,
                 left_double_tap: self.Run,
+                right_down: self.Walk,
+                left_down: self.Walk,
                 right_up: self.IDLE,
                 left_up: self.IDLE
             },
             self.Run: {
+                right_down: self.Run,
+                left_down: self.Run,
                 right_up: self.IDLE,
                 left_up: self.IDLE
             },
