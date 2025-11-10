@@ -7,6 +7,11 @@ import game_framework
 
 from state_machine import StateMachine
 
+last_right_down_time = 0
+last_left_down_time = 0
+DOUBLE_TAP_TIME = 0.3
+
+
 def right_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
 
@@ -22,6 +27,27 @@ def left_down(e):
 def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
 
+
+def right_double_tap(e):
+    global last_right_down_time
+    if e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT:
+        current_time = get_time()
+        if current_time - last_right_down_time < DOUBLE_TAP_TIME:
+            last_right_down_time = 0  # 리셋
+            return True
+        last_right_down_time = current_time
+    return False
+
+def left_double_tap(e):
+    global last_left_down_time
+    if e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_LEFT:
+        current_time = get_time()
+        if current_time - last_left_down_time < DOUBLE_TAP_TIME:
+            last_left_down_time = 0  # 리셋
+            return True
+        last_left_down_time = current_time
+    return False
+
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
 WALK_SPEED_KMPH = 20.0  # Km / Hour
 WALK_SPEED_MPM = (WALK_SPEED_KMPH * 1000.0 / 60.0)
@@ -36,10 +62,6 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-
-last_right_down_time = 0
-last_left_down_time = 0
-DOUBLE_TAP_TIME = 0.3
 
 class ResourceManager:
     _images = {}\
