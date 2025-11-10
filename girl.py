@@ -240,11 +240,13 @@ class Skill_1:
 
     def __init__(self, girl):
         self.girl = girl
+        self.timer = 0.0
 
     def enter(self, e):
         if q_down(e):
             self.girl.dir = self.girl.face_dir = 1
         self.girl.frame = 0.0
+        self.timer = 0.0
 
     def exit(self, e):
         pass
@@ -252,7 +254,10 @@ class Skill_1:
     def do(self):
         frame_count = 7
         self.girl.frame = (self.girl.frame + frame_count * ACTION_PER_TIME * game_framework.frame_time) % frame_count
-        self.girl.x += self.girl.dir * RUN_SPEED_PPS * game_framework.frame_time
+        self.timer += game_framework.frame_time
+
+        if self.girl.frame >= frame_count:
+            self.girl.state_machine.change_state(self.girl.IDLE)
 
     def draw(self):
         key = self.IMAGE_KEY
@@ -599,7 +604,7 @@ class Girl:
             'idle': ResourceManager.load_image('idle', 'stand.png'),
             'walk': ResourceManager.load_image('walk', 'walk.png'),
             'run': ResourceManager.load_image('run', 'run.png'),
-            'skill_1': ResourceManager.load_image('skill1', 'skill1.png'),
+            'skill_1': ResourceManager.load_image('normal_attack', 'normal_attack.png'),
             'skill_2': ResourceManager.load_image('skill2', 'skill2.png'),
             'skill_3': ResourceManager.load_image('skill3', 'skill3.png'),
             'skill_4': ResourceManager.load_image('skill4', 'skill4.png'),
