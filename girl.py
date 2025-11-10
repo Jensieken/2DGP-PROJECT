@@ -345,7 +345,7 @@ class Strike:
             img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w,
                                     frame_h)
 
-class Skill_3:
+class Spine_Attack:
 
     def __init__(self, girl):
         self.girl = girl
@@ -361,7 +361,7 @@ class Skill_3:
 
     def draw(self):
         pass
-class Skill_4:
+class Fast_Attack:
 
     def __init__(self, girl):
         self.girl = girl
@@ -377,7 +377,7 @@ class Skill_4:
 
     def draw(self):
         pass
-class Skill_5:
+class Stab:
 
     def __init__(self, girl):
         self.girl = girl
@@ -393,7 +393,8 @@ class Skill_5:
 
     def draw(self):
         pass
-class Skill_6:
+
+class Dash:
 
     def __init__(self, girl):
         self.girl = girl
@@ -409,7 +410,7 @@ class Skill_6:
 
     def draw(self):
         pass
-class Skill_7:
+class Weak_Stab:
 
     def __init__(self, girl):
         self.girl = girl
@@ -425,7 +426,7 @@ class Skill_7:
 
     def draw(self):
         pass
-class Skill_8:
+class Tumble:
 
     def __init__(self, girl):
         self.girl = girl
@@ -441,7 +442,7 @@ class Skill_8:
 
     def draw(self):
         pass
-class Skill_9:
+class Spine:
 
     def __init__(self, girl):
         self.girl = girl
@@ -457,7 +458,7 @@ class Skill_9:
 
     def draw(self):
         pass
-class Skill_10:
+class Spine2:
 
     def __init__(self, girl):
         self.girl = girl
@@ -473,7 +474,7 @@ class Skill_10:
 
     def draw(self):
         pass
-class Skill_11:
+class Attack:
 
     def __init__(self, girl):
         self.girl = girl
@@ -489,7 +490,7 @@ class Skill_11:
 
     def draw(self):
         pass
-class Skill_12:
+class Magic:
 
     def __init__(self, girl):
         self.girl = girl
@@ -505,7 +506,7 @@ class Skill_12:
 
     def draw(self):
         pass
-class Skill_13:
+class Strong_Attack:
 
     def __init__(self, girl):
         self.girl = girl
@@ -521,7 +522,7 @@ class Skill_13:
 
     def draw(self):
         pass
-class Skill_14:
+class Strong_Magic2:
 
     def __init__(self, girl):
         self.girl = girl
@@ -537,7 +538,7 @@ class Skill_14:
 
     def draw(self):
         pass
-class Skill_15:
+class Strong_Spine:
 
     def __init__(self, girl):
         self.girl = girl
@@ -553,7 +554,7 @@ class Skill_15:
 
     def draw(self):
         pass
-class Skill_16:
+class Strong_Magic3:
 
     def __init__(self, girl):
         self.girl = girl
@@ -569,7 +570,7 @@ class Skill_16:
 
     def draw(self):
         pass
-class Skill_17:
+class Step:
 
     def __init__(self, girl):
         self.girl = girl
@@ -585,7 +586,7 @@ class Skill_17:
 
     def draw(self):
         pass
-class Skill_18:
+class Cut:
 
     def __init__(self, girl):
         self.girl = girl
@@ -601,7 +602,7 @@ class Skill_18:
 
     def draw(self):
         pass
-class Skill_19:
+class Cut2:
 
     def __init__(self, girl):
         self.girl = girl
@@ -617,38 +618,7 @@ class Skill_19:
 
     def draw(self):
         pass
-class Skill_20:
 
-    def __init__(self, girl):
-        self.girl = girl
-
-    def enter(self, e):
-        pass
-
-    def exit(self):
-        pass
-
-    def do(self):
-        pass
-
-    def draw(self):
-        pass
-class Skill_21:
-
-    def __init__(self, girl):
-        self.girl = girl
-
-    def enter(self, e):
-        pass
-
-    def exit(self):
-        pass
-
-    def do(self):
-        pass
-
-    def draw(self):
-        pass
 
 class Girl:
 
@@ -659,25 +629,23 @@ class Girl:
             'run': ResourceManager.load_image('run', 'run.png'),
             'normal_attack': ResourceManager.load_image('normal_attack', 'normal_attack.png'),
             'strike': ResourceManager.load_image('strike', 'strike.png'),
-            'skill_3': ResourceManager.load_image('skill3', 'skill3.png'),
-            'skill_4': ResourceManager.load_image('skill4', 'skill4.png'),
-            'skill_5': ResourceManager.load_image('skill5', 'skill5.png'),
-            'skill_6': ResourceManager.load_image('skill6', 'skill6.png'),
-            'skill_7': ResourceManager.load_image('skill7', 'skill7.png'),
-            'skill_8': ResourceManager.load_image('skill8', 'skill8.png'),
-            'skill_9': ResourceManager.load_image('skill9', 'skill9.png'),
-            'skill_10': ResourceManager.load_image('skill10', 'skill10.png'),
-            'skill_11': ResourceManager.load_image('skill11', 'skill11.png'),
-            'skill_12': ResourceManager.load_image('skill12', 'skill12.png'),
-            'skill_13': ResourceManager.load_image('skill13', 'skill13.png'),
-            'skill_14': ResourceManager.load_image('skill14', 'skill14.png'),
-            'skill_15': ResourceManager.load_image('skill15', 'skill15.png'),
-            'skill_16': ResourceManager.load_image('skill16', 'skill16.png'),
-            'skill_17': ResourceManager.load_image('skill17', 'skill17.png'),
-            'skill_18': ResourceManager.load_image('skill18', 'skill18.png'),
-            'skill_19': ResourceManager.load_image('skill19', 'skill19.png'),
-            'skill_20': ResourceManager.load_image('skill20', 'skill20.png'),
-            'skill_21': ResourceManager.load_image('skill21', 'skill21.png'),
+            'spine_attack': ResourceManager.load_image('spine_attack', 'spine_attack.png'),
+            'fast_attack': ResourceManager.load_image('fast_attack', 'fast_attack.png'),
+            'stab': ResourceManager.load_image('stab', 'stab.png'),
+            'dash': ResourceManager.load_image('dash', 'dash.png'),
+            'weak_stab': ResourceManager.load_image('weak_stab', 'weak_stab.png'),
+            'tumble': ResourceManager.load_image('tumble', 'tumble.png'),
+            'spine': ResourceManager.load_image('spine', 'spine.png'),
+            'spine2': ResourceManager.load_image('spine2', 'spine2.png'),
+            'attack': ResourceManager.load_image('attack', 'attack.png'),
+            'magic': ResourceManager.load_image('magic', 'magic.png'),
+            'strong_attack': ResourceManager.load_image('strong_attack', 'strong_attack.png'),
+            'strong_magic2': ResourceManager.load_image('strong_magic2', 'strong_magic2.png'),
+            'strong_spine': ResourceManager.load_image('strong_spine', 'strong_spine.png'),
+            'strong_magic3': ResourceManager.load_image('strong_magic3', 'strong_magic3.png'),
+            'step': ResourceManager.load_image('step', 'step.png'),
+            'cut': ResourceManager.load_image('cut', 'cut.png'),
+            'cut2': ResourceManager.load_image('cut2', 'cut2.png'),
         }
 
         self.x, self.y = 50, 120
