@@ -28,6 +28,7 @@ def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
 
 
+
 def right_double_tap(e):
     global last_right_down_time
     if e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT:
@@ -231,6 +232,7 @@ class Fall:
     def draw(self):
         pass
 class Skill_1:
+    IMAGE_KEY = 'skill1'
 
     def __init__(self, girl):
         self.girl = girl
@@ -242,10 +244,27 @@ class Skill_1:
         pass
 
     def do(self):
-        pass
+        frame_count = 7
+        self.girl.frame = (self.girl.frame + frame_count * ACTION_PER_TIME * game_framework.frame_time) % frame_count
+        self.girl.x += self.girl.dir * RUN_SPEED_PPS * game_framework.frame_time
 
     def draw(self):
-        pass
+        key = self.IMAGE_KEY
+        img = self.girl.get_image(key)
+        if not img:
+            return
+
+        frame_count = 7
+        frame_w = img.w // frame_count
+        frame_h = img.h
+
+        frame = int(self.girl.frame) % frame_count
+
+        if self.girl.face_dir == 1:
+            img.clip_draw(frame * frame_w, 0, frame_w, frame_h, self.girl.x, self.girl.y)
+        else:
+            img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w,
+                                    frame_h)
 class Skill_2:
 
     def __init__(self, girl):
