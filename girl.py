@@ -315,13 +315,36 @@ class Strike:
         self.playing = True
 
     def exit(self):
-        pass
+        self.playing = False
 
     def do(self):
-        pass
+        frame_count = 7
+        if self.playing:
+            self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
+
+        if self.girl.frame >= frame_count:
+            self.girl.frame = frame_count - 1
+            self.playing = False
+            self.girl.state_machine.change_state(self.girl.IDLE)
 
     def draw(self):
-        pass
+        key = self.IMAGE_KEY
+        img = self.girl.get_image(key)
+        if not img:
+            return
+
+        frame_count = 7
+        frame_w = img.w // frame_count
+        frame_h = img.h
+
+        frame = int(min(self.girl.frame, frame_count - 1))
+
+        if self.girl.face_dir == 1:
+            img.clip_draw(frame * frame_w, 0, frame_w, frame_h, self.girl.x, self.girl.y)
+        else:
+            img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w,
+                                    frame_h)
+
 class Skill_3:
 
     def __init__(self, girl):
