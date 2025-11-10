@@ -240,6 +240,7 @@ class Normal_Attack:
     def __init__(self, girl):
         self.girl = girl
         self.timer = 0.0
+        self.playing = False
 
     def enter(self, e):
         if e and e[0] == 'INPUT':
@@ -252,16 +253,21 @@ class Normal_Attack:
         self.girl.dir = 0
         self.girl.frame = 0.0
         self.timer = 0.0
+        self.playing = True
 
     def exit(self, e):
-        pass
+        self.playing = False
 
     def do(self):
         frame_count = 7
-        self.girl.frame = (self.girl.frame + frame_count * ACTION_PER_TIME * game_framework.frame_time) % frame_count
-        self.timer += game_framework.frame_time
+        if self.playing:
+
+            self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
         if self.girl.frame >= frame_count:
+
+            self.girl.frame = frame_count - 1
+            self.playing = False
             self.girl.state_machine.change_state(self.girl.IDLE)
 
     def draw(self):
@@ -274,7 +280,7 @@ class Normal_Attack:
         frame_w = img.w // frame_count
         frame_h = img.h
 
-        frame = int(self.girl.frame) % frame_count
+        frame = int(min(self.girl.frame, frame_count - 1))
 
         if self.girl.face_dir == 1:
             img.clip_draw(frame * frame_w, 0, frame_w, frame_h, self.girl.x, self.girl.y)
@@ -666,7 +672,7 @@ class Girl:
                 q_down: self.NORMAL_ATTACK
             },
             self.NORMAL_ATTACK: {
-                lambda e: True: self.IDLE
+
             },
             self.JUMP: {},
             self.FALL: {}
