@@ -37,6 +37,10 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 
+last_right_down_time = 0
+last_left_down_time = 0
+DOUBLE_TAP_TIME = 0.3
+
 class ResourceManager:
     _images = {}\
 
