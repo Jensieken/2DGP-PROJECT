@@ -55,7 +55,7 @@ WALK_SPEED_MPS = (WALK_SPEED_MPM / 60.0)
 WALK_SPEED_PPS = (WALK_SPEED_MPS * PIXEL_PER_METER)
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
-RUN_SPEED_KMPH = 60.0
+RUN_SPEED_KMPH = 80.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -581,12 +581,12 @@ class Girl:
         self.face_dir = 1
         self.dir = 0
 
-
         self.IDLE = Idle(self)
         self.Walk = Walk(self)
         self.Run = Run(self)
         self.Jump = Jump(self)
         self.Fall = Fall(self)
+
 
         transitions = {
             self.IDLE: {
@@ -598,14 +598,10 @@ class Girl:
             self.Walk: {
                 right_double_tap: self.Run,
                 left_double_tap: self.Run,
-                right_down: self.Walk,
-                left_down: self.Walk,
                 right_up: self.IDLE,
                 left_up: self.IDLE
             },
             self.Run: {
-                right_down: self.Run,
-                left_down: self.Run,
                 right_up: self.IDLE,
                 left_up: self.IDLE
             },
@@ -623,7 +619,7 @@ class Girl:
 
     def handle_event(self, event):
         self.state_machine.handle_state_event(('INPUT', event))
-        pass
+
 
     def draw(self):
         self.state_machine.draw()
