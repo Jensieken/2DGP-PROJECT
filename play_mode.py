@@ -9,10 +9,20 @@ from girl import Girl
 girl = None
 
 def handle_events():
-
+    event_list = get_events()
+    for event in event_list:
+        if event.type == SDL_QUIT:
+            game_framework.quit()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
+            game_framework.quit()
+        else:
+            girl.handle_event(event)
 
 def init():
+    global girl
 
+    girl = Girl()
+    game_world.add_object(girl, 1)
 
 def update():
     game_world.update()
