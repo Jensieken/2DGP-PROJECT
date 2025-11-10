@@ -287,7 +287,7 @@ class Normal_Attack:
         else:
             img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w,
                                     frame_h)
-class Skill_2:
+class Strike:
 
     def __init__(self, girl):
         self.girl = girl
@@ -616,7 +616,7 @@ class Girl:
             'walk': ResourceManager.load_image('walk', 'walk.png'),
             'run': ResourceManager.load_image('run', 'run.png'),
             'normal_attack': ResourceManager.load_image('normal_attack', 'normal_attack.png'),
-            'skill_2': ResourceManager.load_image('skill2', 'skill2.png'),
+            'strike': ResourceManager.load_image('strike', 'strike.png'),
             'skill_3': ResourceManager.load_image('skill3', 'skill3.png'),
             'skill_4': ResourceManager.load_image('skill4', 'skill4.png'),
             'skill_5': ResourceManager.load_image('skill5', 'skill5.png'),
@@ -647,6 +647,7 @@ class Girl:
         self.WALK = Walk(self)
         self.RUN = Run(self)
         self.NORMAL_ATTACK = Normal_Attack(self)
+        self.STRIKE = Strike(self)
         self.JUMP = Jump(self)
         self.FALL = Fall(self)
 
@@ -671,9 +672,8 @@ class Girl:
                 left_up: self.IDLE,
                 q_down: self.NORMAL_ATTACK
             },
-            self.NORMAL_ATTACK: {
-
-            },
+            self.NORMAL_ATTACK: {},
+            self.STRIKE: {},
             self.JUMP: {},
             self.FALL: {}
         }
