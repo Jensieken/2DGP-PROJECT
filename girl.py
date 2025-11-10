@@ -92,7 +92,7 @@ class Idle:
         if self.girl.face_dir == 1:
             img.clip_draw(frame * frame_w, 0, frame_w, frame_h, self.girl.x, self.girl.y)
         else:
-            img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y)
+            img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w, frame_h)
 
 
 
@@ -132,7 +132,7 @@ class Walk:
         if self.girl.face_dir == 1:
             img.clip_draw(frame * frame_w, 0, frame_w, frame_h, self.girl.x, self.girl.y)
         else:
-            img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y)
+            img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w, frame_h)
 
 class Run:
 
