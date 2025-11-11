@@ -1006,6 +1006,58 @@ class Strong_Attack:
             img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w,
                                     frame_h)
 
+class Strong_Magic:
+    IMAGE_KEY = 'strong_magic'
+
+    def __init__(self, girl):
+        self.girl = girl
+        self.timer = 0.0
+        self.playing = False
+
+    def enter(self, e):
+        if e and e[0] == 'INPUT':
+            event = e[1]
+            if event.key == SDLK_RIGHT:
+                self.girl.face_dir = 1
+            elif event.key == SDLK_LEFT:
+                self.girl.face_dir = -1
+
+        self.girl.dir = 0
+        self.girl.frame = 0.0
+        self.timer = 0.0
+        self.playing = True
+
+    def exit(self):
+        self.playing = False
+
+    def do(self):
+        frame_count = 13
+        if self.playing:
+            self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
+
+        if self.girl.frame >= frame_count:
+            self.girl.frame = frame_count - 1
+            self.playing = False
+            self.girl.state_machine.change_state(self.girl.IDLE)
+
+    def draw(self, e):
+        key = self.IMAGE_KEY
+        img = self.girl.get_image(key)
+        if not img:
+            return
+
+        frame_count = 13
+        frame_w = img.w // frame_count
+        frame_h = img.h
+
+        frame = int(min(self.girl.frame, frame_count - 1))
+
+        if self.girl.face_dir == 1:
+            img.clip_draw(frame * frame_w, 0, frame_w, frame_h, self.girl.x, self.girl.y)
+        else:
+            img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w,
+                                    frame_h)
+
 class Strong_Magic2:
     IMAGE_KEY = 'strong_magic2'
 
