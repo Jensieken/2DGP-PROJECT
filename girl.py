@@ -979,7 +979,7 @@ class Strong_Attack:
         self.playing = False
 
     def do(self):
-        frame_count = 7
+        frame_count = 14
         if self.playing:
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
@@ -994,7 +994,7 @@ class Strong_Attack:
         if not img:
             return
 
-        frame_count = 7
+        frame_count = 14
         frame_w = img.w // frame_count
         frame_h = img.h
 
