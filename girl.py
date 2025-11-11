@@ -1079,7 +1079,7 @@ class Strong_Magic2:
         self.timer = 0.0
         self.playing = True
 
-    def exit(self):
+    def exit(self, e):
         self.playing = False
 
     def do(self):
@@ -1092,7 +1092,7 @@ class Strong_Magic2:
             self.playing = False
             self.girl.state_machine.change_state(self.girl.IDLE)
 
-    def draw(self, e):
+    def draw(self):
         key = self.IMAGE_KEY
         img = self.girl.get_image(key)
         if not img:
