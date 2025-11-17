@@ -127,31 +127,7 @@ def j_down(e):
 def j_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_j
 
-def right_double_tap(e):
-    global last_right_down_time
-    if e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT:
-        current_time = get_time()
-        if current_time - last_right_down_time < DOUBLE_TAP_TIME:
-            last_right_down_time = 0
-            return True
-        last_right_down_time = current_time
-    return False
-
-def left_double_tap(e):
-    global last_left_down_time
-    if e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_LEFT:
-        current_time = get_time()
-        if current_time - last_left_down_time < DOUBLE_TAP_TIME:
-            last_left_down_time = 0
-            return True
-        last_left_down_time = current_time
-    return False
-
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
-WALK_SPEED_KMPH = 40.0  # Km / Hour
-WALK_SPEED_MPM = (WALK_SPEED_KMPH * 1000.0 / 60.0)
-WALK_SPEED_MPS = (WALK_SPEED_MPM / 60.0)
-WALK_SPEED_PPS = (WALK_SPEED_MPS * PIXEL_PER_METER)
 
 RUN_SPEED_KMPH = 80.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
@@ -219,45 +195,6 @@ class Idle:
             img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w, frame_h)
 
 
-
-class Walk:
-    IMAGE_KEY = 'walk'
-
-    def __init__(self, girl):
-        self.girl = girl
-
-    def enter(self, e):
-        if right_down(e) or left_up(e):
-            self.girl.dir = self.girl.face_dir = 1
-        elif left_down(e) or right_up(e):
-            self.girl.dir = self.girl.face_dir = -1
-        self.girl.frame = 0.0
-
-    def exit(self, e):
-        pass
-
-    def do(self):
-        frame_count = 8
-        self.girl.frame = (self.girl.frame + frame_count * ACTION_PER_TIME * game_framework.frame_time) % frame_count
-        self.girl.x += self.girl.dir * WALK_SPEED_PPS * game_framework.frame_time
-
-    def draw(self):
-        key = self.IMAGE_KEY
-        img = self.girl.get_image(key)
-        if not img:
-            return
-
-        frame_count = 8
-        frame_w = img.w // frame_count
-        frame_h = img.h
-
-        frame = int(self.girl.frame) % frame_count
-
-        if self.girl.face_dir == 1:
-            img.clip_draw(frame * frame_w, 0, frame_w, frame_h, self.girl.x, self.girl.y)
-        else:
-            img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w, frame_h)
-
 class Run:
     IMAGE_KEY = 'run'
 
@@ -265,9 +202,9 @@ class Run:
         self.girl = girl
 
     def enter(self, e):
-        if right_double_tap(e) or right_down(e):
+        if right_down(e):
             self.girl.dir = self.girl.face_dir = 1
-        elif left_double_tap(e) or left_down(e):
+        elif left_down(e):
             self.girl.dir = self.girl.face_dir = -1
         self.girl.frame = 0.0
 
@@ -1377,7 +1314,6 @@ class Girl:
     def __init__(self):
         self.images = {
             'idle': ResourceManager.load_image('idle', 'stand.png'),
-            'walk': ResourceManager.load_image('walk', 'walk.png'),
             'run': ResourceManager.load_image('run', 'run.png'),
             'normal_attack': ResourceManager.load_image('normal_attack', 'normal_attack.png'),
             'strike': ResourceManager.load_image('strike', 'strike.png'),
@@ -1407,7 +1343,6 @@ class Girl:
         self.dir = 0
 
         self.IDLE = Idle(self)
-        self.WALK = Walk(self)
         self.RUN = Run(self)
         self.NORMAL_ATTACK = Normal_Attack(self)
         self.STRIKE = Strike(self)
@@ -1435,12 +1370,10 @@ class Girl:
 
         transitions = {
             self.IDLE: {
-                right_double_tap: self.RUN,
-                left_double_tap: self.RUN,
-                right_down: self.WALK,
-                left_down: self.WALK,
-                right_up: self.WALK,
-                left_up: self.WALK,
+                right_down: self.RUN,
+                left_down: self.RUN,
+                right_up: self.RUN,
+                left_up: self.RUN,
                 q_down: self.NORMAL_ATTACK,
                 w_down: self.STRIKE,
                 e_down: self.SPINE_ATTACK,
@@ -1462,34 +1395,7 @@ class Girl:
                 m_down: self.CUT2,
                 j_down: self.STRONG_MAGIC3
             },
-            self.WALK: {
-                right_double_tap: self.RUN,
-                left_double_tap: self.RUN,
-                right_up: self.IDLE,
-                left_up: self.IDLE,
-                right_down: self.IDLE,
-                left_down: self.IDLE,
-                q_down: self.NORMAL_ATTACK,
-                w_down: self.STRIKE,
-                e_down: self.SPINE_ATTACK,
-                r_down: self.FAST_ATTACK,
-                t_down: self.STAB,
-                y_down: self.DASH,
-                a_down: self.WEAK_STAB,
-                s_down: self.TUMBLE,
-                d_down: self.SPINE,
-                f_down: self.SPINE2,
-                g_down: self.ATTACK,
-                h_down: self.MAGIC,
-                z_down: self.STRONG_ATTACK,
-                x_down: self.STRONG_MAGIC,
-                c_down: self.STRONG_MAGIC2,
-                v_down: self.STRONG_SPINE,
-                b_down: self.STEP,
-                n_down: self.CUT,
-                m_down: self.CUT2,
-                j_down: self.STRONG_MAGIC3
-            },
+
             self.RUN: {
                 right_up: self.IDLE,
                 left_up: self.IDLE,
