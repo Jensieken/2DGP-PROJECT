@@ -6,6 +6,7 @@ import game_world
 
 from girl import Girl
 from monster import MonsterSpawner
+from background import Ground, Sky
 
 girl = None
 
@@ -21,6 +22,13 @@ def handle_events():
 
 def init():
     global girl
+
+    ground = Ground()
+    game_world.add_object(ground, 0)
+
+    sky = Sky()
+    game_world.add_object(sky, 0)
+
     girl = Girl()
     game_world.add_object(girl, 1)
 
