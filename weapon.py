@@ -1,5 +1,6 @@
 import os
 from pico2d import load_image
+DEBUG = False
 
 _image_cache = {}
 
