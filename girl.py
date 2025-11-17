@@ -7,17 +7,34 @@ import game_framework
 
 from state_machine import StateMachine
 
-
+right_pressed = False
+left_pressed = False
 
 def right_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
+    global right_pressed
+    if e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT:
+        right_pressed = True
+        return True
+    return False
 def right_up(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_RIGHT
+    global right_pressed
+    if e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_RIGHT:
+        right_pressed = False
+        return True
+    return False
 
 def left_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_LEFT
+    global left_pressed
+    if e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_LEFT:
+        left_pressed = True
+        return True
+    return False
 def left_up(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
+    global left_pressed
+    if e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT:
+        left_pressed = False
+        return True
+    return False
 
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
@@ -134,7 +151,6 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 
-
 class ResourceManager:
     _images = {}\
 
@@ -246,12 +262,15 @@ class Jump:
         self.jump_power = 600  # 초기 점프 속도 (픽셀/초)
         self.max_height_reached = False
         self.frame = 0.0
+        self.dir_on_jump = 0
 
     def enter(self, e):
         self.initial_y = self.girl.y
         self.velocity_y = self.jump_power
         self.max_height_reached = False
         self.frame = 0.0
+
+        self.dir_on_jump = self.girl.dir
 
         # 좌우 방향키 입력 확인
         if e and e[0] == 'INPUT':
@@ -358,7 +377,6 @@ class Fall:
             self.girl.state_machine.change_state(self.girl.IDLE)
 
     def get_frame_count(self):
-
         return 2
 
     def draw(self):
@@ -1547,12 +1565,8 @@ class Girl:
 
             },
             self.FALL: {
-
-                space_up: self.IDLE,
                 left_up: self.IDLE,
-                right_up: self.IDLE,
-
-                space_down: self.JUMP
+                right_up: self.IDLE
             },
             self.NORMAL_ATTACK: {},
             self.STRIKE: {},
