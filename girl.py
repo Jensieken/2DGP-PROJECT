@@ -479,7 +479,7 @@ class Normal_Attack:
 
             self.girl.frame = frame_count - 1
             self.playing = False
-            self.girl.state_machine.change_state(self.girl.IDLE)
+            finish_to_idle_or_run(self.girl)
 
     def draw(self):
         key = self.IMAGE_KEY
@@ -530,7 +530,7 @@ class Strike:
         if self.girl.frame >= frame_count:
             self.girl.frame = frame_count - 1
             self.playing = False
-            self.girl.state_machine.change_state(self.girl.IDLE)
+            finish_to_idle_or_run(self.girl)
 
     def draw(self):
         key = self.IMAGE_KEY
@@ -582,7 +582,7 @@ class Spine_Attack:
         if self.girl.frame >= frame_count:
             self.girl.frame = frame_count - 1
             self.playing = False
-            self.girl.state_machine.change_state(self.girl.IDLE)
+            finish_to_idle_or_run(self.girl)
 
     def draw(self):
         key = self.IMAGE_KEY
@@ -634,7 +634,7 @@ class Fast_Attack:
         if self.girl.frame >= frame_count:
             self.girl.frame = frame_count - 1
             self.playing = False
-            self.girl.state_machine.change_state(self.girl.IDLE)
+            finish_to_idle_or_run(self.girl)
 
     def draw(self):
         key = self.IMAGE_KEY
@@ -686,7 +686,7 @@ class Stab:
         if self.girl.frame >= frame_count:
             self.girl.frame = frame_count - 1
             self.playing = False
-            self.girl.state_machine.change_state(self.girl.IDLE)
+            finish_to_idle_or_run(self.girl)
 
     def draw(self):
         key = self.IMAGE_KEY
@@ -738,7 +738,7 @@ class Weak_Stab:
         if self.girl.frame >= frame_count:
             self.girl.frame = frame_count - 1
             self.playing = False
-            self.girl.state_machine.change_state(self.girl.IDLE)
+            finish_to_idle_or_run(self.girl)
 
     def draw(self):
         key = self.IMAGE_KEY
@@ -790,7 +790,7 @@ class Spine:
         if self.girl.frame >= frame_count:
             self.girl.frame = frame_count - 1
             self.playing = False
-            self.girl.state_machine.change_state(self.girl.IDLE)
+            finish_to_idle_or_run(self.girl)
 
     def draw(self):
         key = self.IMAGE_KEY
@@ -842,7 +842,7 @@ class Spine2:
         if self.girl.frame >= frame_count:
             self.girl.frame = frame_count - 1
             self.playing = False
-            self.girl.state_machine.change_state(self.girl.IDLE)
+            finish_to_idle_or_run(self.girl)
 
     def draw(self):
         key = self.IMAGE_KEY
@@ -894,7 +894,7 @@ class Attack:
         if self.girl.frame >= frame_count:
             self.girl.frame = frame_count - 1
             self.playing = False
-            self.girl.state_machine.change_state(self.girl.IDLE)
+            finish_to_idle_or_run(self.girl)
 
     def draw(self):
         key = self.IMAGE_KEY
@@ -946,7 +946,7 @@ class Magic:
         if self.girl.frame >= frame_count:
             self.girl.frame = frame_count - 1
             self.playing = False
-            self.girl.state_machine.change_state(self.girl.IDLE)
+            finish_to_idle_or_run(self.girl)
 
     def draw(self):
         key = self.IMAGE_KEY
@@ -998,7 +998,7 @@ class Strong_Attack:
         if self.girl.frame >= frame_count:
             self.girl.frame = frame_count - 1
             self.playing = False
-            self.girl.state_machine.change_state(self.girl.IDLE)
+            finish_to_idle_or_run(self.girl)
 
     def draw(self):
         key = self.IMAGE_KEY
@@ -1050,7 +1050,7 @@ class Strong_Magic:
         if self.girl.frame >= frame_count:
             self.girl.frame = frame_count - 1
             self.playing = False
-            self.girl.state_machine.change_state(self.girl.IDLE)
+            finish_to_idle_or_run(self.girl)
 
     def draw(self):
         key = self.IMAGE_KEY
@@ -1102,7 +1102,7 @@ class Strong_Magic2:
         if self.girl.frame >= frame_count:
             self.girl.frame = frame_count - 1
             self.playing = False
-            self.girl.state_machine.change_state(self.girl.IDLE)
+            finish_to_idle_or_run(self.girl)
 
     def draw(self):
         key = self.IMAGE_KEY
@@ -1154,7 +1154,7 @@ class Strong_Spine:
         if self.girl.frame >= frame_count:
             self.girl.frame = frame_count - 1
             self.playing = False
-            self.girl.state_machine.change_state(self.girl.IDLE)
+            finish_to_idle_or_run(self.girl)
 
     def draw(self):
         key = self.IMAGE_KEY
@@ -1206,7 +1206,7 @@ class Strong_Magic3:
         if self.girl.frame >= frame_count:
             self.girl.frame = frame_count - 1
             self.playing = False
-            self.girl.state_machine.change_state(self.girl.IDLE)
+            finish_to_idle_or_run(self.girl)
 
     def draw(self):
         key = self.IMAGE_KEY
@@ -1258,7 +1258,7 @@ class Cut:
         if self.girl.frame >= frame_count:
             self.girl.frame = frame_count - 1
             self.playing = False
-            self.girl.state_machine.change_state(self.girl.IDLE)
+            finish_to_idle_or_run(self.girl)
 
     def draw(self):
         key = self.IMAGE_KEY
@@ -1310,7 +1310,7 @@ class Cut2:
         if self.girl.frame >= frame_count:
             self.girl.frame = frame_count - 1
             self.playing = False
-            self.girl.state_machine.change_state(self.girl.IDLE)
+            finish_to_idle_or_run(self.girl)
 
     def draw(self):
         key = self.IMAGE_KEY
