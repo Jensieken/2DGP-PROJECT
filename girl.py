@@ -479,6 +479,12 @@ class Normal_Attack:
         self.timer = 0.0
         self.playing = True
 
+        try:
+            from monster import spawn_attack_hit
+            spawn_attack_hit(self.girl.x, self.girl.y + 10, self.girl.face_dir)
+        except Exception:
+            pass
+
     def exit(self, e):
         self.playing = False
 
@@ -1388,6 +1394,7 @@ class Girl:
         self.face_dir = 1
         self.dir = 0
         self.stop_after_jump = False
+        self.hp = 100
 
         self.IDLE = Idle(self)
         self.RUN = Run(self)

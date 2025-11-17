@@ -5,6 +5,7 @@ import game_framework
 import game_world
 
 from girl import Girl
+from monster import MonsterSpawner
 
 girl = None
 
@@ -20,9 +21,10 @@ def handle_events():
 
 def init():
     global girl
-
     girl = Girl()
     game_world.add_object(girl, 1)
+
+    spawner = MonsterSpawner(count=4, x_range=(200, 1400), y_fixed=120)
 
 def update():
     game_world.update()
