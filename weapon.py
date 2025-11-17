@@ -1,4 +1,5 @@
 import os
+import math
 from pico2d import load_image
 DEBUG = False
 
@@ -24,6 +25,15 @@ def _load_weapon_image(filename):
 
     _image_cache[filename] = img
     return img
+
+def _round_offset_pair(pair):
+    if pair is None:
+        return (0, 0)
+    try:
+        x, y = pair
+        return (int(round(x)), int(round(y)))
+    except Exception:
+        return (0, 0)
 
 class Weapon:
     def __init__(self, sheets: dict, default_state: str):

@@ -231,7 +231,7 @@ class Idle:
         if hasattr(self.girl, 'weapon_manager'):
             self.girl.weapon_manager.draw(
                 self.girl.x, self.girl.y, self.girl.face_dir,
-                char_frame_index=self.girl.frame, char_frame_count=1, state_name='idle'
+                char_frame_index=self.girl.frame, char_frame_count=12, state_name='idle'
             )
 
 class Run:
