@@ -222,6 +222,13 @@ class Run:
         self.girl = girl
 
     def enter(self, e):
+        if getattr(self.girl, 'stop_after_jump', False):
+            self.girl.stop_after_jump = False
+            self.girl.dir = 0
+
+            self.girl.state_machine.change_state(self.girl.IDLE)
+            return
+
         if right_pressed:
             self.girl.dir = self.girl.face_dir = 1
         elif left_pressed:
@@ -271,6 +278,7 @@ class Jump:
         self.max_height_reached = False
         self.frame = 0.0
         self.dir_on_jump = 0
+        self.started_with_dir = False
 
     def enter(self, e):
         self.initial_y = self.girl.y
@@ -287,17 +295,22 @@ class Jump:
         else:
             self.dir_on_jump = 0
 
+        self.started_with_dir = (self.dir_on_jump != 0)
+        self.girl.stop_after_jump = False
+
     def exit(self, e):
         pass
 
     def do(self):
         import game_framework
 
-
         self.velocity_y += self.gravity * game_framework.frame_time
         self.girl.y += self.velocity_y * game_framework.frame_time
 
         self.girl.x += self.dir_on_jump * RUN_SPEED_PPS * game_framework.frame_time
+
+        if self.started_with_dir and not (right_pressed or left_pressed) and self.girl.y > self.initial_y:
+            self.girl.stop_after_jump = True
 
         if self.velocity_y <= 0 and not self.max_height_reached:
             self.max_height_reached = True
@@ -378,10 +391,15 @@ class Fall:
             self.girl.frame = frame_count - 1
             self.playing = False
 
-            if any_dir_key_pressed(None):
-                self.girl.state_machine.change_state(self.girl.RUN)
-            else:
+            if getattr(self.girl, 'stop_after_jump', False):
+                self.girl.stop_after_jump = False
+                self.girl.dir = 0
                 self.girl.state_machine.change_state(self.girl.IDLE)
+            else:
+                if any_dir_key_pressed(None):
+                    self.girl.state_machine.change_state(self.girl.RUN)
+                else:
+                    self.girl.state_machine.change_state(self.girl.IDLE)
 
     def get_frame_count(self):
         return 2
@@ -1484,6 +1502,7 @@ class Girl:
         self.frame = 0
         self.face_dir = 1
         self.dir = 0
+        self.stop_after_jump = False
 
         self.IDLE = Idle(self)
         self.RUN = Run(self)
@@ -1605,6 +1624,21 @@ class Girl:
         self.state_machine.update()
 
     def handle_event(self, event):
+        global right_pressed, left_pressed
+        try:
+            if event.type == SDL_KEYDOWN:
+                if event.key == SDLK_RIGHT:
+                    right_pressed = True
+                elif event.key == SDLK_LEFT:
+                    left_pressed = True
+            elif event.type == SDL_KEYUP:
+                if event.key == SDLK_RIGHT:
+                    right_pressed = False
+                elif event.key == SDLK_LEFT:
+                    left_pressed = False
+        except Exception:
+            pass
+
         self.state_machine.handle_state_event(('INPUT', event))
 
 
