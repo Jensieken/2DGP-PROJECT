@@ -278,15 +278,14 @@ class Jump:
         self.max_height_reached = False
         self.frame = 0.0
 
-        self.dir_on_jump = self.girl.dir
-
-        # 좌우 방향키 입력 확인
-        if e and e[0] == 'INPUT':
-            event = e[1]
-            if event.key == SDLK_RIGHT:
-                self.girl.face_dir = 1
-            elif event.key == SDLK_LEFT:
-                self.girl.face_dir = -1
+        if right_pressed:
+            self.dir_on_jump = 1
+            self.girl.face_dir = 1
+        elif left_pressed:
+            self.dir_on_jump = -1
+            self.girl.face_dir = -1
+        else:
+            self.dir_on_jump = 0
 
     def exit(self, e):
         pass
@@ -296,10 +295,9 @@ class Jump:
 
 
         self.velocity_y += self.gravity * game_framework.frame_time
-
-
         self.girl.y += self.velocity_y * game_framework.frame_time
 
+        self.girl.x += self.dir_on_jump * RUN_SPEED_PPS * game_framework.frame_time
 
         if self.velocity_y <= 0 and not self.max_height_reached:
             self.max_height_reached = True
@@ -320,10 +318,8 @@ class Jump:
     def get_current_image_key(self):
 
         if not self.max_height_reached:
-
             return self.IMAGE_KEY_JUMPING
         else:
-
             return self.IMAGE_KEY_FALLING
 
     def get_frame_count(self, image_key):
@@ -1576,8 +1572,7 @@ class Girl:
 
             },
             self.FALL: {
-                left_up: self.IDLE,
-                right_up: self.IDLE
+
             },
             self.NORMAL_ATTACK: {},
             self.STRIKE: {},
