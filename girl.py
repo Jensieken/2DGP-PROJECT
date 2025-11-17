@@ -279,6 +279,7 @@ class Jump:
         self.frame = 0.0
         self.dir_on_jump = 0
         self.started_with_dir = False
+        self.released_during_jump = False
 
     def enter(self, e):
         self.initial_y = self.girl.y
