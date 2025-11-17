@@ -297,6 +297,7 @@ class Jump:
             self.dir_on_jump = 0
 
         self.started_with_dir = (self.dir_on_jump != 0)
+        self.released_during_jump = False
         self.girl.stop_after_jump = False
 
     def exit(self, e):
