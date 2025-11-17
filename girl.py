@@ -1375,7 +1375,7 @@ class Girl:
             'pink_sword',
             Weapon(
                 sheets = {
-                    'run': ('run_pink.png', 12, (22, 6), None),
+                    'run': ('run_pink.png', 2, (22, 6), None),
                 },
                 default_state='run'
             )
