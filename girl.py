@@ -235,58 +235,154 @@ class Run:
         else:
             img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w,
                                     frame_h)
+
+
 class Jump:
+    IMAGE_KEY_JUMP = 'jump'
+    IMAGE_KEY_JUMPING = 'jumping'
+    IMAGE_KEY_FALLING = 'falling'
 
     def __init__(self, girl):
         self.girl = girl
+        self.initial_y = 0
+        self.velocity_y = 0
+        self.gravity = -1500  # 중력 가속도 (픽셀/초^2)
+        self.jump_power = 600  # 초기 점프 속도 (픽셀/초)
+        self.max_height_reached = False
+        self.frame = 0.0
 
     def enter(self, e):
+        self.initial_y = self.girl.y
+        self.velocity_y = self.jump_power
+        self.max_height_reached = False
+        self.frame = 0.0
 
-        self.girl.vel_y = 12
-        self.girl.jump_time = 0.0
-        self.girl.image = load_image('jump.png')
-        self.girl.frame = 0
+        # 좌우 방향키 입력 확인
+        if e and e[0] == 'INPUT':
+            event = e[1]
+            if event.key == SDLK_RIGHT:
+                self.girl.face_dir = 1
+            elif event.key == SDLK_LEFT:
+                self.girl.face_dir = -1
 
     def exit(self, e):
         pass
 
     def do(self):
-        self.girl.vel_y -= GRAVITY
-        self.girl.y += self.girl.vel_y
+        import game_framework
 
-        if self.girl.vel_y > 0:
-            self.girl.image = load_image('jumping.png')
-            self.girl.frame = int(self.girl.jump_time * 5) % 1
 
-        elif self.girl.vel_y <= 0:
-            self.girl.image = load_image('falling.png')
-            self.girl.frame = 0
+        self.velocity_y += self.gravity * game_framework.frame_time
 
-        if self.girl.y <= 0:
-            self.girl.y = 0
-            self.girl.image = load_image('fall.png')  # 착지 동작
-            self.girl.frame = 0
-            self.girl.state_machine.change_state('Idle')
+
+        self.girl.y += self.velocity_y * game_framework.frame_time
+
+
+        if self.velocity_y <= 0 and not self.max_height_reached:
+            self.max_height_reached = True
+
+
+        if self.girl.y <= self.initial_y:
+            self.girl.y = self.initial_y
+            self.girl.state_machine.change_state(self.girl.FALL)
+            return
+
+
+        current_image_key = self.get_current_image_key()
+        img = self.girl.get_image(current_image_key)
+        if img:
+            frame_count = self.get_frame_count(current_image_key)
+            self.frame = (self.frame + frame_count * ACTION_PER_TIME * game_framework.frame_time) % frame_count
+
+    def get_current_image_key(self):
+
+        if not self.max_height_reached:
+
+            return self.IMAGE_KEY_JUMPING
+        else:
+
+            return self.IMAGE_KEY_FALLING
+
+    def get_frame_count(self, image_key):
+
+        frame_counts = {
+            'jump': 1,
+            'jumping': 4,
+            'falling': 4
+        }
+        return frame_counts.get(image_key, 1)
 
     def draw(self):
-        pass
+        current_image_key = self.get_current_image_key()
+        img = self.girl.get_image(current_image_key)
+        if not img:
+            return
+
+        frame_count = self.get_frame_count(current_image_key)
+        frame_w = img.w // frame_count
+        frame_h = img.h
+
+        frame = int(self.frame) % frame_count
+
+        if self.girl.face_dir == 1:
+            img.clip_draw(frame * frame_w, 0, frame_w, frame_h, self.girl.x, self.girl.y)
+        else:
+            img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h',
+                                    self.girl.x, self.girl.y, frame_w, frame_h)
+
 
 class Fall:
+    IMAGE_KEY = 'fall'
 
     def __init__(self, girl):
         self.girl = girl
+        self.timer = 0.0
+        self.playing = False
 
     def enter(self, e):
-        pass
+        self.girl.dir = 0
+        self.girl.frame = 0.0
+        self.timer = 0.0
+        self.playing = True
 
-    def exit(self):
-        pass
+    def exit(self, e):
+        self.playing = False
 
     def do(self):
-        pass
+        import game_framework
+
+        frame_count = self.get_frame_count()
+        if self.playing:
+            self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
+
+        if self.girl.frame >= frame_count:
+            self.girl.frame = frame_count - 1
+            self.playing = False
+
+            self.girl.state_machine.change_state(self.girl.IDLE)
+
+    def get_frame_count(self):
+
+        return 4
 
     def draw(self):
-        pass
+        key = self.IMAGE_KEY
+        img = self.girl.get_image(key)
+        if not img:
+            return
+
+        frame_count = self.get_frame_count()
+        frame_w = img.w // frame_count
+        frame_h = img.h
+
+        frame = int(min(self.girl.frame, frame_count - 1))
+
+        if self.girl.face_dir == 1:
+            img.clip_draw(frame * frame_w, 0, frame_w, frame_h, self.girl.x, self.girl.y)
+        else:
+            img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h',
+                                    self.girl.x, self.girl.y, frame_w, frame_h)
+
 class Normal_Attack:
     IMAGE_KEY = 'normal_attack'
 
@@ -1337,6 +1433,10 @@ class Girl:
         self.images = {
             'idle': ResourceManager.load_image('idle', 'stand.png'),
             'run': ResourceManager.load_image('run', 'run.png'),
+            'jump': ResourceManager.load_image('jump', 'jump.png'),
+            'jumping': ResourceManager.load_image('jumping', 'jumping.png'),
+            'falling': ResourceManager.load_image('falling', 'falling.png'),
+            'fall': ResourceManager.load_image('fall', 'fall.png'),
             'normal_attack': ResourceManager.load_image('normal_attack', 'normal_attack.png'),
             'strike': ResourceManager.load_image('strike', 'strike.png'),
             'spine_attack': ResourceManager.load_image('spine_attack', 'spine_attack.png'),
