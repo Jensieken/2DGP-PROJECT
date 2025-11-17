@@ -1,4 +1,6 @@
 import os
+
+
 from weapon import Weapon, WeaponManager
 
 RUN_OFFSET = (-50, 3)
@@ -18,6 +20,8 @@ IDLE_OFFSETS = {
     11: (-50.5,  4.5)
 }
 
+NORMAL_ATTACK_OFFSET = (-50, 3)
+
 def create_default_weapon_manager():
     manager = WeaponManager()
 
@@ -26,6 +30,7 @@ def create_default_weapon_manager():
         sheets = {
             'run': ('run_pink.png', 12, RUN_OFFSET, None),
             'idle': ('idle_pink.png', 1, (-50, 3), IDLE_OFFSETS),
+            'normal_attack': ('normal_attack_pink.png', 7, NORMAL_ATTACK_OFFSET, None)
         },
         default_state = 'run'
     )
