@@ -1543,8 +1543,8 @@ class Girl:
             },
 
             self.RUN: {
-                right_up: lambda e: self.RUN if left_pressed else self.IDLE,
-                left_up: lambda e: self.RUN if right_pressed else self.IDLE,
+                right_up: self.IDLE,
+                left_up: self.IDLE,
                 right_down: self.IDLE,
                 left_down: self.IDLE,
                 space_down: self.JUMP,
