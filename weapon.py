@@ -68,13 +68,21 @@ class Weapon:
             return
 
         cfi = int(char_frame_index) % max(1, char_frame_count)
-        fi = self._compute_frame(char_frame_index, char_frame_count, sheet['frame_count'])
+        fi = self._compute_frame(cfi, char_frame_count, sheet['frame_count'])
         fw = max(1, img.w // sheet['frame_count'])
         fh = img.h
-        ox, oy = sheet['per_frame_offsets'].get(fi, sheet['default_offset'])
 
-        print(f'[Weapon DEBUG] state={state_name} char_frame={cfi} -> weapon_frame={fi} offset=({ox},{oy}) '
-              f'image_frame_w={fw} draw_base=({cx},{cy}) face_dir={face_dir}')
+        p_offsets = sheet.get('per_frame_offsets', {})
+        if p_offsets:
+            ox_oy = p_offsets.get(cfi, p_offsets.get(fi, sheet['default_offset']))
+        else:
+            ox_oy = sheet['default_offset']
+
+        ox, oy = ox_oy
+
+        if DEBUG:
+            print(f'[Weapon DEBUG] state={state_name} char_frame={cfi} -> weapon_frame={fi} '
+                  f'offset=({ox},{oy}) image_frame_w={fw} draw_base=({cx},{cy}) face_dir={face_dir}')
 
         if face_dir == 1:
             draw_x = cx + ox
