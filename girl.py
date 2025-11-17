@@ -1369,16 +1369,6 @@ class Girl:
         }
 
         self.weapon_manager = create_default_weapon_manager()
-        self.weapon_manager.add_weapon(
-            'pink_sword',
-            Weapon(
-                sheets = {
-                    'run': ('run_pink.png', 12, (22, 6), None),
-                },
-                default_state='run'
-            )
-        )
-        self.weapon_manager.equip('pink_sword')
 
         self.x, self.y = 50, 120
         self.frame = 0
