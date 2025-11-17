@@ -137,6 +137,8 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 
+GRAVITY = 0.5
+
 class ResourceManager:
     _images = {}\
 
@@ -239,7 +241,11 @@ class Jump:
         self.girl = girl
 
     def enter(self, e):
-        pass
+
+        self.girl.vel_y = 12
+        self.girl.jump_time = 0.0
+        self.girl.image = load_image('jump.png')
+        self.girl.frame = 0
 
     def exit(self):
         pass
@@ -249,6 +255,7 @@ class Jump:
 
     def draw(self):
         pass
+
 class Fall:
 
     def __init__(self, girl):
@@ -1344,6 +1351,7 @@ class Girl:
 
         self.IDLE = Idle(self)
         self.RUN = Run(self)
+        self.JUMP = Jump(self)
         self.NORMAL_ATTACK = Normal_Attack(self)
         self.STRIKE = Strike(self)
         self.SPINE_ATTACK = Spine_Attack(self)
@@ -1374,6 +1382,7 @@ class Girl:
                 left_down: self.RUN,
                 right_up: self.RUN,
                 left_up: self.RUN,
+                space_down: self.JUMP,
                 q_down: self.NORMAL_ATTACK,
                 w_down: self.STRIKE,
                 e_down: self.SPINE_ATTACK,
@@ -1401,6 +1410,7 @@ class Girl:
                 left_up: self.IDLE,
                 right_down: self.IDLE,
                 left_down: self.IDLE,
+                space_down: self.JUMP,
                 q_down: self.NORMAL_ATTACK,
                 w_down: self.STRIKE,
                 e_down: self.SPINE_ATTACK,
