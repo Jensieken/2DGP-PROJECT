@@ -341,7 +341,6 @@ class Jump:
             self.frame = (self.frame + frame_count * ACTION_PER_TIME * 2.0 * game_framework.frame_time) % frame_count
 
     def get_current_image_key(self):
-
         if not self.max_height_reached:
             return self.IMAGE_KEY_JUMPING
         else:
@@ -695,59 +694,6 @@ class Stab:
             img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w,
                                     frame_h)
 
-
-class Dash:
-    IMAGE_KEY = 'dash'
-
-    def __init__(self, girl):
-        self.girl = girl
-        self.timer = 0.0
-        self.playing = False
-
-    def enter(self, e):
-        if e and e[0] == 'INPUT':
-            event = e[1]
-            if event.key == SDLK_RIGHT:
-                self.girl.face_dir = 1
-            elif event.key == SDLK_LEFT:
-                self.girl.face_dir = -1
-
-        self.girl.dir = 0
-        self.girl.frame = 0.0
-        self.timer = 0.0
-        self.playing = True
-
-    def exit(self, e):
-        self.playing = False
-
-    def do(self):
-        frame_count = 3
-        if self.playing:
-            self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
-
-        if self.girl.frame >= frame_count:
-            self.girl.frame = frame_count - 1
-            self.playing = False
-            self.girl.state_machine.change_state(self.girl.IDLE)
-
-    def draw(self):
-        key = self.IMAGE_KEY
-        img = self.girl.get_image(key)
-        if not img:
-            return
-
-        frame_count = 3
-        frame_w = img.w // frame_count
-        frame_h = img.h
-
-        frame = int(min(self.girl.frame, frame_count - 1))
-
-        if self.girl.face_dir == 1:
-            img.clip_draw(frame * frame_w, 0, frame_w, frame_h, self.girl.x, self.girl.y)
-        else:
-            img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w,
-                                    frame_h)
-
 class Weak_Stab:
     IMAGE_KEY = 'weak_stab'
 
@@ -789,58 +735,6 @@ class Weak_Stab:
             return
 
         frame_count = 6
-        frame_w = img.w // frame_count
-        frame_h = img.h
-
-        frame = int(min(self.girl.frame, frame_count - 1))
-
-        if self.girl.face_dir == 1:
-            img.clip_draw(frame * frame_w, 0, frame_w, frame_h, self.girl.x, self.girl.y)
-        else:
-            img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w,
-                                    frame_h)
-
-class Tumble:
-    IMAGE_KEY = 'tumble'
-
-    def __init__(self, girl):
-        self.girl = girl
-        self.timer = 0.0
-        self.playing = False
-
-    def enter(self, e):
-        if e and e[0] == 'INPUT':
-            event = e[1]
-            if event.key == SDLK_RIGHT:
-                self.girl.face_dir = 1
-            elif event.key == SDLK_LEFT:
-                self.girl.face_dir = -1
-
-        self.girl.dir = 0
-        self.girl.frame = 0.0
-        self.timer = 0.0
-        self.playing = True
-
-    def exit(self, e):
-        self.playing = False
-
-    def do(self):
-        frame_count = 4
-        if self.playing:
-            self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
-
-        if self.girl.frame >= frame_count:
-            self.girl.frame = frame_count - 1
-            self.playing = False
-            self.girl.state_machine.change_state(self.girl.IDLE)
-
-    def draw(self):
-        key = self.IMAGE_KEY
-        img = self.girl.get_image(key)
-        if not img:
-            return
-
-        frame_count = 4
         frame_w = img.w // frame_count
         frame_h = img.h
 
@@ -1320,58 +1214,6 @@ class Strong_Magic3:
             img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w,
                                     frame_h)
 
-class Step:
-    IMAGE_KEY = 'step'
-
-    def __init__(self, girl):
-        self.girl = girl
-        self.timer = 0.0
-        self.playing = False
-
-    def enter(self, e):
-        if e and e[0] == 'INPUT':
-            event = e[1]
-            if event.key == SDLK_RIGHT:
-                self.girl.face_dir = 1
-            elif event.key == SDLK_LEFT:
-                self.girl.face_dir = -1
-
-        self.girl.dir = 0
-        self.girl.frame = 0.0
-        self.timer = 0.0
-        self.playing = True
-
-    def exit(self, e):
-        self.playing = False
-
-    def do(self):
-        frame_count = 10
-        if self.playing:
-            self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
-
-        if self.girl.frame >= frame_count:
-            self.girl.frame = frame_count - 1
-            self.playing = False
-            self.girl.state_machine.change_state(self.girl.IDLE)
-
-    def draw(self):
-        key = self.IMAGE_KEY
-        img = self.girl.get_image(key)
-        if not img:
-            return
-
-        frame_count = 10
-        frame_w = img.w // frame_count
-        frame_h = img.h
-
-        frame = int(min(self.girl.frame, frame_count - 1))
-
-        if self.girl.face_dir == 1:
-            img.clip_draw(frame * frame_w, 0, frame_w, frame_h, self.girl.x, self.girl.y)
-        else:
-            img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w,
-                                    frame_h)
-
 class Cut:
     IMAGE_KEY = 'cut'
 
@@ -1555,9 +1397,9 @@ class Girl:
                 e_down: self.SPINE_ATTACK,
                 r_down: self.FAST_ATTACK,
                 t_down: self.STAB,
-                y_down: self.DASH,
+                y_down: self.STRONG_MAGIC3,
                 a_down: self.WEAK_STAB,
-                s_down: self.TUMBLE,
+                s_down: self.CUT,
                 d_down: self.SPINE,
                 f_down: self.SPINE2,
                 g_down: self.ATTACK,
@@ -1566,10 +1408,7 @@ class Girl:
                 x_down: self.STRONG_MAGIC,
                 c_down: self.STRONG_MAGIC2,
                 v_down: self.STRONG_SPINE,
-                b_down: self.STEP,
-                n_down: self.CUT,
-                m_down: self.CUT2,
-                j_down: self.STRONG_MAGIC3
+                b_down: self.CUT2
             },
 
             self.RUN: {
@@ -1583,9 +1422,9 @@ class Girl:
                 e_down: self.SPINE_ATTACK,
                 r_down: self.FAST_ATTACK,
                 t_down: self.STAB,
-                y_down: self.DASH,
+                y_down: self.STRONG_MAGIC3,
                 a_down: self.WEAK_STAB,
-                s_down: self.TUMBLE,
+                s_down: self.CUT,
                 d_down: self.SPINE,
                 f_down: self.SPINE2,
                 g_down: self.ATTACK,
@@ -1594,10 +1433,7 @@ class Girl:
                 x_down: self.STRONG_MAGIC,
                 c_down: self.STRONG_MAGIC2,
                 v_down: self.STRONG_SPINE,
-                b_down: self.STEP,
-                n_down: self.CUT,
-                m_down: self.CUT2,
-                j_down: self.STRONG_MAGIC3
+                b_down: self.CUT2
             },
             self.JUMP: {
 
@@ -1610,9 +1446,7 @@ class Girl:
             self.SPINE_ATTACK: {},
             self.FAST_ATTACK: {},
             self.STAB: {},
-            self.DASH: {},
             self.WEAK_STAB: {},
-            self.TUMBLE: {},
             self.SPINE: {},
             self.SPINE2: {},
             self.ATTACK: {},
@@ -1622,7 +1456,6 @@ class Girl:
             self.STRONG_MAGIC2: {},
             self.STRONG_SPINE: {},
             self.STRONG_MAGIC3: {},
-            self.STEP: {},
             self.CUT: {},
             self.CUT2: {}
         }
