@@ -59,10 +59,12 @@ class Weapon:
     def draw(self, cx, cy, face_dir, char_frame_index=0, char_frame_count=1, state_name=None):
         sheet = self._choose_sheet(state_name)
         if not sheet:
+            print(f'[Weapon DEBUG] no sheet for state {state_name}')
             return
 
         img = sheet.get('image')
         if not img:
+            print(f'[Weapon DEBUG] image not loaded for state {state_name}')
             return
 
         fi = self._compute_frame(char_frame_index, char_frame_count, sheet['frame_count'])
