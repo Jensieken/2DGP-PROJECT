@@ -251,7 +251,22 @@ class Jump:
         pass
 
     def do(self):
-        pass
+        self.girl.vel_y -= GRAVITY
+        self.girl.y += self.girl.vel_y
+
+        if self.girl.vel_y > 0:
+            self.girl.image = load_image('jumping.png')
+            self.girl.frame = int(self.girl.jump_time * 5) % 1
+
+        elif self.girl.vel_y <= 0:
+            self.girl.image = load_image('falling.png')
+            self.girl.frame = 0
+
+        if self.girl.y <= 0:
+            self.girl.y = 0
+            self.girl.image = load_image('fall.png')  # 착지 동작
+            self.girl.frame = 0
+            self.girl.state_machine.change_state('Idle')
 
     def draw(self):
         pass
