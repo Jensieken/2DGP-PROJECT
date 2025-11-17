@@ -306,9 +306,9 @@ class Jump:
     def get_frame_count(self, image_key):
 
         frame_counts = {
-            'jump': 1,
-            'jumping': 4,
-            'falling': 4
+            'jump': 2,
+            'jumping': 1,
+            'falling': 1
         }
         return frame_counts.get(image_key, 1)
 
@@ -363,7 +363,7 @@ class Fall:
 
     def get_frame_count(self):
 
-        return 4
+        return 2
 
     def draw(self):
         key = self.IMAGE_KEY
