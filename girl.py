@@ -2,6 +2,7 @@ import os
 from pico2d import load_image, get_time, load_font, draw_rectangle, close_canvas
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_q, SDLK_w, SDLK_c, SDLK_e, SDLK_r, SDLK_a, SDLK_s, SDLK_d, SDLK_f, SDLK_z, SDLK_x, SDLK_v, SDLK_t, SDLK_y, SDLK_g, SDLK_h, SDLK_b, SDLK_n, SDLK_m, SDLK_j
 from weapon import Weapon, WeaponManager
+from weapons_config import create_default_weapon_manager
 
 import game_world
 import game_framework
@@ -275,14 +276,11 @@ class Run:
         else:
             img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w,
                                     frame_h)
+
         if hasattr(self.girl, 'weapon_manager'):
             self.girl.weapon_manager.draw(
-                self.girl.x,
-                self.girl.y,
-                self.girl.face_dir,
-                char_frame_index=self.girl.frame,
-                char_frame_count=12,
-                state_name='run'
+                self.girl.x, self.girl.y, self.girl.face_dir,
+                char_frame_index=self.girl.frame, char_frame_count=12, state_name='run'
             )
 
 class Jump:
@@ -1370,7 +1368,7 @@ class Girl:
             'cut2': ResourceManager.load_image('cut2', 'cut2.png'),
         }
 
-        self.weapon_manager = WeaponManager()
+        self.weapon_manager = create_default_weapon_manager()
         self.weapon_manager.add_weapon(
             'pink_sword',
             Weapon(
