@@ -1,19 +1,7 @@
+import os
 from weapon import Weapon, WeaponManager
 
-RUN_PER_FRAME_OFFSETS = {
-    0: (26, 10),
-    1: (28, 9),
-    2: (30, 8),
-    3: (32, 8),
-    4: (34, 7),
-    5: (36, 6),
-    6: (34, 6),
-    7: (32, 7),
-    8: (30, 8),
-    9: (28, 9),
-    10: (26, 10),
-    11: (24, 11)
-}
+DEFAULT_RUN_OFFSET = (-50, 3)
 
 def create_default_weapon_manager():
     manager = WeaponManager()
@@ -21,7 +9,7 @@ def create_default_weapon_manager():
 
     pink_sword = Weapon(
         sheets = {
-            'run': ('run_pink.png', 12, (22, 6), RUN_PER_FRAME_OFFSETS),
+            'run': ('run_pink.png', 12, DEFAULT_RUN_OFFSET, None),
         },
         default_state = 'run'
     )
