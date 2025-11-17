@@ -23,15 +23,14 @@ class Weapon:
         self.sheets = {}
         self.default_state = default_state
 
-        base_dir = os.path.dirname(__file__)
         for state, sheet in sheets.items():
-            filename, frame_count, default_offset, per_frame_offsets = sheet
-            path = os.path.join(base_dir, 'girl_image', filename)
-            try:
-                img = load_image(path)
-            except Exception as e:
-                print(f'[Weapon] 이미지 로드 실패: {path} -> {e}')
-                img = None
+            filename = sheet[0]
+            frame_count = sheet[1] if len(sheet) > 1 else 1
+            default_offset = sheet[2] if len(sheet) > 2 else (0, 0)
+            per_frame_offsets = sheet[3] if len(sheet) > 3 else None
+
+            img = _load_weapon_image(filename)
+
             self.sheets[state] = {
                 'image': img,
                 'frame_count': max(1, int(frame_count)),
@@ -52,11 +51,11 @@ class Weapon:
 
     def draw(self, cx, cy, face_dir, char_frame_index=0, char_frame_count=1, state_name=None):
         sheet = self._choose_sheet(state_name)
-        if not sheet or not sheet['image']:
+        if not sheet:
             return
+        img = sheet['image']
 
         fi = self._compute_frame(char_frame_index, char_frame_count, sheet['frame_count'])
-        img = sheet['image']
         fw = max(1, img.w // sheet['frame_count'])
         fh = img.h
         ox, oy = sheet['per_frame_offsets'].get(fi, sheet['default_offset'])
