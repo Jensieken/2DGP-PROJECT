@@ -13,9 +13,12 @@ class Weapon:
 
 class WeaponManager:
 
-    def __init__():
+    def __init__(self):
+        self.weapons = {}
+        self.equipped = None
 
-    def add_weapon():
+    def add_weapon(self, name, weapon: Weapon):
+        self.weapons[name] = weapon
 
     def equip():
 
