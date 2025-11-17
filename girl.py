@@ -382,7 +382,10 @@ class Fall:
             self.girl.frame = frame_count - 1
             self.playing = False
 
-            self.girl.state_machine.change_state(self.girl.IDLE)
+            if any_dir_key_pressed(None):
+                self.girl.state_machine.change_state(self.girl.RUN)
+            else:
+                self.girl.state_machine.change_state(self.girl.IDLE)
 
     def get_frame_count(self):
         return 2
