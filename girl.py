@@ -317,7 +317,12 @@ class Jump:
             self.girl.face_dir = -1
 
         if self.started_with_dir and not (right_pressed or left_pressed) and self.girl.y > self.initial_y:
+            self.released_during_jump = True
             self.girl.stop_after_jump = True
+
+        if self.released_during_jump and (right_pressed or left_pressed):
+            self.released_during_jump = False
+            self.girl.stop_after_jump = False
 
         if self.velocity_y <= 0 and not self.max_height_reached:
             self.max_height_reached = True
