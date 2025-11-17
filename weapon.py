@@ -1,7 +1,22 @@
 import os
 from pico2d import load_image
 
+_image_cache = {}
+
 def _load_weapon_image(filename):
+    if filename in _image_cache:
+        return _image_cache[filename]
+
+    base_dir = os.path.dirname(__file__)
+    path = os.path.join(base_dir, 'weapon_image', filename)
+    try:
+        img = load_image(path)
+    except Exception as e:
+        print(f'[Weapon] 이미지 로드 실패: {path} -> {e}')
+        img = None
+
+    _image_cache[filename] = img
+    return img
 
 class Weapon:
     def __init__(self, sheets: dict, default_state: str):
