@@ -2,7 +2,19 @@ import os
 from pico2d import load_image
 
 class Weapon:
-    def __init__():
+    def __init__(self, image_filename, frame_count=1, default_offset=(0, 0), per_frame_offsets=None, visible_in=None):
+        base_dir = os.path.dirname(__file__)
+        path = os.path.join(base_dir, 'girl_image', image_filename)
+        try:
+            self.image = load_image(path)
+        except Exception as e:
+            print(f'[Weapon] 이미지 로드 실패: {path} -> {e}')
+            self.image = None
+
+        self.frame_count = max(1, int(frame_count))
+        self.default_offset = default_offset
+        self.per_frame_offsets = per_frame_offsets or {}
+        self.visible_in = set(visible_in) if visible_in is not None else None
 
     def is_visible_in():
 
