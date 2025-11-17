@@ -1335,9 +1335,7 @@ class Girl:
             'spine_attack': ResourceManager.load_image('spine_attack', 'spine_attack.png'),
             'fast_attack': ResourceManager.load_image('fast_attack', 'fast_attack.png'),
             'stab': ResourceManager.load_image('stab', 'stab.png'),
-            'dash': ResourceManager.load_image('dash', 'dash.png'),
             'weak_stab': ResourceManager.load_image('weak_stab', 'weak_stab.png'),
-            'tumble': ResourceManager.load_image('tumble', 'tumble.png'),
             'spine': ResourceManager.load_image('spine', 'spine.png'),
             'spine2': ResourceManager.load_image('spine2', 'spine2.png'),
             'attack': ResourceManager.load_image('attack', 'attack.png'),
@@ -1347,7 +1345,6 @@ class Girl:
             'strong_magic2': ResourceManager.load_image('strong_magic2', 'strong_magic2.png'),
             'strong_spine': ResourceManager.load_image('strong_spine', 'strong_spine.png'),
             'strong_magic3': ResourceManager.load_image('strong_magic3', 'strong_magic3.png'),
-            'step': ResourceManager.load_image('step', 'step.png'),
             'cut': ResourceManager.load_image('cut', 'cut.png'),
             'cut2': ResourceManager.load_image('cut2', 'cut2.png'),
         }
@@ -1366,9 +1363,7 @@ class Girl:
         self.SPINE_ATTACK = Spine_Attack(self)
         self.FAST_ATTACK = Fast_Attack(self)
         self.STAB = Stab(self)
-        self.DASH = Dash(self)
         self.WEAK_STAB = Weak_Stab(self)
-        self.TUMBLE = Tumble(self)
         self.SPINE = Spine(self)
         self.SPINE2 = Spine2(self)
         self.ATTACK = Attack(self)
@@ -1378,7 +1373,6 @@ class Girl:
         self.STRONG_MAGIC2 = Strong_Magic2(self)
         self.STRONG_SPINE = Strong_Spine(self)
         self.STRONG_MAGIC3 = Strong_Magic3(self)
-        self.STEP = Step(self)
         self.CUT = Cut(self)
         self.CUT2 = Cut2(self)
         self.JUMP = Jump(self)
