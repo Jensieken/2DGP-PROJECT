@@ -67,10 +67,14 @@ class Weapon:
             print(f'[Weapon DEBUG] image not loaded for state {state_name}')
             return
 
+        cfi = int(char_frame_index) % max(1, char_frame_count)
         fi = self._compute_frame(char_frame_index, char_frame_count, sheet['frame_count'])
         fw = max(1, img.w // sheet['frame_count'])
         fh = img.h
         ox, oy = sheet['per_frame_offsets'].get(fi, sheet['default_offset'])
+
+        print(f'[Weapon DEBUG] state={state_name} char_frame={cfi} -> weapon_frame={fi} offset=({ox},{oy}) '
+              f'image_frame_w={fw} draw_base=({cx},{cy}) face_dir={face_dir}')
 
         if face_dir == 1:
             draw_x = cx + ox
