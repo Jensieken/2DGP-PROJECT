@@ -247,7 +247,7 @@ class Jump:
         self.girl.image = load_image('jump.png')
         self.girl.frame = 0
 
-    def exit(self):
+    def exit(self, e):
         pass
 
     def do(self):
