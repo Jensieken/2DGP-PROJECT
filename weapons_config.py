@@ -25,7 +25,7 @@ def create_default_weapon_manager():
     pink_sword = Weapon(
         sheets = {
             'run': ('run_pink.png', 12, RUN_OFFSET, None),
-            'idle': ('idle_pink.png', 12, (-50, 3), IDLE_OFFSETS),
+            'idle': ('idle_pink.png', 1, (-50, 3), IDLE_OFFSETS),
         },
         default_state = 'run'
     )
