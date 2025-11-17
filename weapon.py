@@ -27,36 +27,33 @@ class Weapon:
             return self.sheets[state_name]
         return self.sheets.get(self.default_state)
 
-    def _compute_frame(self, char_frame_index, char_frame_count):
-        if self.frame_count == char_frame_count:
-            return int(char_frame_index) % self.frame_count
+    def _compute_frame(self, char_frame_index, char_frame_count, weapon_frame_count):
+        if weapon_frame_count == char_frame_count:
+            return int(char_frame_index) % weapon_frame_count
         ratio = (int(char_frame_index) % max(1, char_frame_count)) / max(1, char_frame_count)
-        return int(ratio * self.frame_count) % self.frame_count
+        return int(ratio * weapon_frame_count) % weapon_frame_count
 
     def draw(self, cx, cy, face_dir, char_frame_index=0, char_frame_count=1, state_name=None):
-        if not self.image:
+        sheet = self._choose_sheet(state_name)
+        if not sheet or not sheet['image']:
             return
 
-        if not self.is_visible_in(state_name):
-            return
-
-        fi = self._compute_frame(char_frame_index, char_frame_count)
-        fw = max(1, self.image.w // self.frame_count)
-        fh = self.image.h
-
-        ox, oy = self.per_frame_offsets.get(fi, self.default_offset)
+        fi = self._compute_frame(char_frame_index, char_frame_count, sheet['frame_count'])
+        img = sheet['image']
+        fw = max(1, img.w // sheet['frame_count'])
+        fh = img.h
+        ox, oy = sheet['per_frame_offsets'].get(fi, sheet['default_offset'])
 
         if face_dir == 1:
             draw_x = cx + ox
             draw_y = cy + oy
-            self.image.clip_draw(fi * fw, 0, fw, fh, draw_x, draw_y)
+            img.clip_draaw(fi * fw, 0, fw, fh, draw_x, draw_y)
         else:
             draw_x = cx - ox
             draw_y = cy + oy
-            self.image.clip_composite_draw(fi * fw, 0, fw, fh, 0, 'h', draw_x, draw_y, fw, fh)
+            img.clip_composite_draw(fi * fw, 0, fw, fh, 0, 'h', draw_x, draw_y, fw, fh)
 
 class WeaponManager:
-
     def __init__(self):
         self.weapons = {}
         self.equipped = None
@@ -76,7 +73,7 @@ class WeaponManager:
     def ger_equiped(self):
         return self.weapons.get(self.equipped)
 
-    def draw(elf, cx, cy, face_dir, char_frame_index=0, char_frame_count=1, state_name=None):
+    def draw(self, cx, cy, face_dir, char_frame_index=0, char_frame_count=1, state_name=None):
         w = self.get_equipped()
         if not w:
             return
