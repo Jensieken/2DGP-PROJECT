@@ -9,6 +9,10 @@ def _load_weapon_image(filename):
 
     base_dir = os.path.dirname(__file__)
     path = os.path.join(base_dir, 'weapon_image', filename)
+
+    print(f'[Weapon DEBUG] 시도 경로: {path}')
+    print(f'[Weapon DEBUG] 존재 여부: {os.path.exists(path)}')
+
     try:
         img = load_image(path)
     except Exception as e:
