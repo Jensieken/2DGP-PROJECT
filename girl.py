@@ -147,6 +147,18 @@ def j_down(e):
 def j_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_j
 
+def finish_to_idle_or_run(girl):
+    if right_pressed and not left_pressed:
+        girl.face_dir = 1
+        girl.dir = 1
+        girl.state_machine.change_state(girl.RUN)
+    elif left_pressed and not right_pressed:
+        girl.face_dir = -1
+        girl.dir = -1
+        girl.state_machine.change_state(girl.RUN)
+    else:
+        girl.state_machine.change_state(girl.IDLE)
+
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
 
 RUN_SPEED_KMPH = 80.0
