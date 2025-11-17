@@ -57,7 +57,9 @@ class Weapon:
         sheet = self._choose_sheet(state_name)
         if not sheet:
             return
-        img = sheet['image']
+        img = sheet('image')
+        if not img:
+            return
 
         fi = self._compute_frame(char_frame_index, char_frame_count, sheet['frame_count'])
         fw = max(1, img.w // sheet['frame_count'])
@@ -90,7 +92,7 @@ class WeaponManager:
     def unequip(self):
         self.equipped = None
 
-    def ger_equiped(self):
+    def get_equipped(self):
         return self.weapons.get(self.equipped)
 
     def draw(self, cx, cy, face_dir, char_frame_index=0, char_frame_count=1, state_name=None):
