@@ -48,6 +48,23 @@ class Weapon:
 
             img = _load_weapon_image(filename)
 
+            default_offset_i = _round_offset_pair(default_offset)
+
+            if per_frame_offsets:
+                clean_p = {}
+                for k, v in per_frame_offsets.items():
+                    try:
+                        ki = int(k)
+                    except Exception:
+                        try:
+                            ki = int(float(k))
+                        except Exception:
+                            continue
+                    clean_p[ki] = _round_offset_pair(v)
+                per_frame_offsets_i = clean_p
+            else:
+                per_frame_offsets_i = {}
+
             self.sheets[state] = {
                 'image': img,
                 'frame_count': max(1, int(frame_count)),
@@ -89,6 +106,12 @@ class Weapon:
             ox_oy = sheet['default_offset']
 
         ox, oy = ox_oy
+
+        if face_dir == 1:
+            draw_x = int(round(cx + ox))
+        else:
+            draw_x = int(round(cx - ox))
+        draw_y = int(round(cy + oy))
 
         if DEBUG:
             print(f'[Weapon DEBUG] state={state_name} char_frame={cfi} -> weapon_frame={fi} '
