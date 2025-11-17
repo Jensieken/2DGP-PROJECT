@@ -1362,6 +1362,18 @@ class Girl:
             'cut2': ResourceManager.load_image('cut2', 'cut2.png'),
         }
 
+        self.weapon_manager = WeaponManager()
+        self.weapon_manager.add_weapon(
+            'pink_sword',
+            weapon(
+                sheets = {
+                    'run': ('run_pink.png', 12, (22, 6), None),
+                },
+                default_state='run'
+            )
+        )
+        self.weapon_manager.equip('pink_sword')
+
         self.x, self.y = 50, 120
         self.frame = 0
         self.face_dir = 1
