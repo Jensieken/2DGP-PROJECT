@@ -309,6 +309,13 @@ class Jump:
 
         self.girl.x += self.dir_on_jump * RUN_SPEED_PPS * game_framework.frame_time
 
+        if right_pressed and not left_pressed:
+            self.girl.face_dir = 1
+        elif left_pressed and not right_pressed:
+            self.girl.face_dir = -1
+
+        self.girl.x += self.dir_on_jump * RUN_SPEED_PPS * game_framework.frame_time
+
         if self.started_with_dir and not (right_pressed or left_pressed) and self.girl.y > self.initial_y:
             self.girl.stop_after_jump = True
 
