@@ -7,9 +7,6 @@ import game_framework
 
 from state_machine import StateMachine
 
-last_right_down_time = 0
-last_left_down_time = 0
-DOUBLE_TAP_TIME = 0.3
 
 
 def right_down(e):
