@@ -266,8 +266,8 @@ class Jump:
         self.girl = girl
         self.initial_y = 0
         self.velocity_y = 0
-        self.gravity = -1500  # 중력 가속도 (픽셀/초^2)
-        self.jump_power = 600  # 초기 점프 속도 (픽셀/초)
+        self.gravity = -2000  # 중력 가속도 (픽셀/초^2)
+        self.jump_power = 900  # 초기 점프 속도 (픽셀/초)
         self.max_height_reached = False
         self.frame = 0.0
         self.dir_on_jump = 0
@@ -315,7 +315,7 @@ class Jump:
         img = self.girl.get_image(current_image_key)
         if img:
             frame_count = self.get_frame_count(current_image_key)
-            self.frame = (self.frame + frame_count * ACTION_PER_TIME * game_framework.frame_time) % frame_count
+            self.frame = (self.frame + frame_count * ACTION_PER_TIME * 2.0 * game_framework.frame_time) % frame_count
 
     def get_current_image_key(self):
 
@@ -376,7 +376,7 @@ class Fall:
 
         frame_count = self.get_frame_count()
         if self.playing:
-            self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
+            self.girl.frame += frame_count * ACTION_PER_TIME * 2.0 * game_framework.frame_time
 
         if self.girl.frame >= frame_count:
             self.girl.frame = frame_count - 1
