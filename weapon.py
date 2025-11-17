@@ -2,24 +2,30 @@ import os
 from pico2d import load_image
 
 class Weapon:
-    def __init__(self, image_filename, frame_count=1, default_offset=(0, 0), per_frame_offsets=None, visible_in=None):
+    def __init__(self, sheets: dict, default_state: str):
+        self.sheets = {}
+        self.default_state = default_state
+
         base_dir = os.path.dirname(__file__)
-        path = os.path.join(base_dir, 'girl_image', image_filename)
-        try:
-            self.image = load_image(path)
-        except Exception as e:
-            print(f'[Weapon] 이미지 로드 실패: {path} -> {e}')
-            self.image = None
+        for state, sheet in sheets.items():
+            filename, frame_count, default_offset, per_frame_offsets = sheet
+            path = os.path.join(base_dir, 'girl_image', filename)
+            try:
+                img = load_image(path)
+            except Exception as e:
+                print(f'[Weapon] 이미지 로드 실패: {path} -> {e}')
+                img = None
+            self.sheets[state] = {
+                'image': img,
+                'frame_count': max(1, int(frame_count)),
+                'default_offset': default_offset or (0, 0),
+                'per_frame_offsets': per_frame_offsets or {}
+            }
 
-        self.frame_count = max(1, int(frame_count))
-        self.default_offset = default_offset
-        self.per_frame_offsets = per_frame_offsets or {}
-        self.visible_in = set(visible_in) if visible_in is not None else None
-
-    def is_visible_in(self, state_name):
-        if self.visible_in is None:
-            return True
-        return state_name in self.visible_in
+    def _choose_sheet(self, state_name):
+        if state_name and state_name in self.sheets:
+            return self.sheets[state_name]
+        return self.sheets.get(self.default_state)
 
     def _compute_frame(self, char_frame_index, char_frame_count):
         if self.frame_count == char_frame_count:
