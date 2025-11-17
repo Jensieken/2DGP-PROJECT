@@ -1,6 +1,8 @@
 import os
 from pico2d import load_image
 
+def _load_weapon_image(filename):
+
 class Weapon:
     def __init__(self, sheets: dict, default_state: str):
         self.sheets = {}
