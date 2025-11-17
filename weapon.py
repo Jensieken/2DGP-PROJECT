@@ -57,7 +57,8 @@ class Weapon:
         sheet = self._choose_sheet(state_name)
         if not sheet:
             return
-        img = sheet('image')
+
+        img = sheet.get('image')
         if not img:
             return
 
@@ -69,7 +70,7 @@ class Weapon:
         if face_dir == 1:
             draw_x = cx + ox
             draw_y = cy + oy
-            img.clip_draaw(fi * fw, 0, fw, fh, draw_x, draw_y)
+            img.clip_draw(fi * fw, 0, fw, fh, draw_x, draw_y)
         else:
             draw_x = cx - ox
             draw_y = cy + oy
