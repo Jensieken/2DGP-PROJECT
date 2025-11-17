@@ -201,9 +201,9 @@ class Run:
         self.girl = girl
 
     def enter(self, e):
-        if right_down(e):
+        if right_down(e) or left_up(e):
             self.girl.dir = self.girl.face_dir = 1
-        elif left_down(e):
+        elif left_down(e) or right_up(e):
             self.girl.dir = self.girl.face_dir = -1
         self.girl.frame = 0.0
 
