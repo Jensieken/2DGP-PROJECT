@@ -1,6 +1,7 @@
-import os
+import os, weapon
 from pico2d import load_image, get_time, load_font, draw_rectangle, close_canvas
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_q, SDLK_w, SDLK_c, SDLK_e, SDLK_r, SDLK_a, SDLK_s, SDLK_d, SDLK_f, SDLK_z, SDLK_x, SDLK_v, SDLK_t, SDLK_y, SDLK_g, SDLK_h, SDLK_b, SDLK_n, SDLK_m, SDLK_j
+from weapon import Weapon, WeaponManager
 
 import game_world
 import game_framework
