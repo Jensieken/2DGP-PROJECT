@@ -16,12 +16,38 @@ class Weapon:
         self.per_frame_offsets = per_frame_offsets or {}
         self.visible_in = set(visible_in) if visible_in is not None else None
 
-    def is_visible_in():
+    def is_visible_in(self, state_name):
+        if self.visible_in is None:
+            return True
+        return state_name in self.visible_in
 
-    def _compute_frame():
+    def _compute_frame(self, char_frame_index, char_frame_count):
+        if self.frame_count == char_frame_count:
+            return int(char_frame_index) % self.frame_count
+        ratio = (int(char_frame_index) % max(1, char_frame_count)) / max(1, char_frame_count)
+        return int(ratio * self.frame_count) % self.frame_count
 
-    def draw():
+    def draw(self, cx, cy, face_dir, char_frame_index=0, char_frame_count=1, state_name=None):
+        if not self.image:
+            return
 
+        if not self.is_visible_in(state_name):
+            return
+
+        fi = self._compute_frame(char_frame_index, char_frame_count)
+        fw = max(1, self.image.w // self.frame_count)
+        fh = self.image.h
+
+        ox, oy = self.per_frame_offsets.get(fi, self.default_offset)
+
+        if face_dir == 1:
+            draw_x = cx + ox
+            draw_y = cy + oy
+            self.image.clip_draw(fi * fw, 0, fw, fh, draw_x, draw_y)
+        else:
+            draw_x = cx - ox
+            draw_y = cy + oy
+            self.image.clip_composite_draw(fi * fw, 0, fw, fh, 0, 'h', draw_x, draw_y, fw, fh)
 
 class WeaponManager:
 
