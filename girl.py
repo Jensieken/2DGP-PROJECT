@@ -134,7 +134,6 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 
-GRAVITY = 0.5
 
 class ResourceManager:
     _images = {}\
@@ -1544,6 +1543,17 @@ class Girl:
                 m_down: self.CUT2,
                 j_down: self.STRONG_MAGIC3
             },
+            self.JUMP: {
+
+            },
+            self.FALL: {
+
+                space_up: self.IDLE,
+                left_up: self.IDLE,
+                right_up: self.IDLE,
+
+                space_down: self.JUMP
+            },
             self.NORMAL_ATTACK: {},
             self.STRIKE: {},
             self.SPINE_ATTACK: {},
@@ -1563,9 +1573,7 @@ class Girl:
             self.STRONG_MAGIC3: {},
             self.STEP: {},
             self.CUT: {},
-            self.CUT2: {},
-            self.JUMP: {},
-            self.FALL: {}
+            self.CUT2: {}
         }
 
         self.state_machine = StateMachine(self.IDLE, transitions)
