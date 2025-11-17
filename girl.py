@@ -36,6 +36,12 @@ def left_up(e):
         return True
     return False
 
+def no_dir_key_pressed(e):
+    return not right_pressed and not left_pressed
+
+def any_dir_key_pressed(e):
+    return right_pressed or left_pressed
+
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 def space_up(e):
