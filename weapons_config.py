@@ -14,3 +14,18 @@ RUN_PER_FRAME_OFFSETS = {
     10: (26, 10),
     11: (24, 11)
 }
+
+def create_default_weapon_manager():
+    manager = WeaponManager()
+
+
+    pink_sword = Weapon(
+        sheets = {
+            'run': ('run_pink.png', 12, (22, 6), RUN_PER_FRAME_OFFSETS),
+        },
+        default_state = 'run'
+    )
+
+    manager.add_weapon('pink_sword', pink_sword)
+    manager.equip('pink_sword')
+    return manager
