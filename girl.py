@@ -222,10 +222,12 @@ class Run:
         self.girl = girl
 
     def enter(self, e):
-        if right_down(e) or left_up(e):
+        if right_pressed:
             self.girl.dir = self.girl.face_dir = 1
-        elif left_down(e) or right_up(e):
+        elif left_pressed:
             self.girl.dir = self.girl.face_dir = -1
+        else:
+            self.girl.dir = 0
         self.girl.frame = 0.0
 
     def exit(self, e):
@@ -1541,8 +1543,8 @@ class Girl:
             },
 
             self.RUN: {
-                right_up: self.IDLE,
-                left_up: self.IDLE,
+                right_up: lambda e: self.RUN if left_pressed else self.IDLE,
+                left_up: lambda e: self.RUN if right_pressed else self.IDLE,
                 right_down: self.IDLE,
                 left_down: self.IDLE,
                 space_down: self.JUMP,
