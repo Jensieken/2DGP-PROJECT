@@ -8,7 +8,12 @@ class Ground:
         pass
 
     def draw(self):
-        self.image.draw(1600, 120)
+        if self.image:
+            try:
+                self.image.draw(400, 60)
+                self.image.draw(1200, 60)
+            except Exception:
+                self.image.draw(800, 60)
 
 
 class Sky:
@@ -19,4 +24,8 @@ class Sky:
         pass
 
     def draw(self):
-        self.image.draw(1600, 800)
+        if self.image:
+            try:
+                self.image.draw(800, 400, 1600, 800)
+            except Exception:
+                self.image.draw(800, 400)
