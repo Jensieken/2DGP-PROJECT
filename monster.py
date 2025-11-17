@@ -88,7 +88,7 @@ class Run:
 
     def do(self):
         frame_count = 4
-        self.goblin.frame = (self.goblin.frame + frame_count * 8.0 * game_framework.frame_time) % frame_count
+        self.goblin.frame = (self.goblin.frame + frame_count * 2.0 * game_framework.frame_time) % frame_count
 
         self.goblin.x += self.goblin.dir * self.goblin.speed * game_framework.frame_time
         self.goblin.face_dir = 1 if self.goblin.dir > 0 else -1
@@ -123,8 +123,8 @@ class Run:
 
 
 class Goblin:
-    def __init__(self, x=400, y=120):
-        # images: idle (single frame), run (4 frames)
+    def __init__(self, x=400, y=40):
+
         self.images = {
             'idle': ResourceManager.load_image('idle', 'goblin_idle.png'),
             'run': ResourceManager.load_image('run', 'goblin_run.png'),
@@ -158,7 +158,7 @@ class Goblin:
         self.state_machine.draw()
 
 class MonsterSpawner:
-    def __init__(self, count=4, x_range=(200, 1400), y_fixed=120):
+    def __init__(self, count=4, x_range=(200, 1400), y_fixed=40):
         self.count = count
         self.x_range = x_range
         self.y_fixed = y_fixed
