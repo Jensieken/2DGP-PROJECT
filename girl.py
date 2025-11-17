@@ -228,6 +228,11 @@ class Idle:
         else:
             img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w, frame_h)
 
+        if hasattr(self.girl, 'weapon_manager'):
+            self.girl.weapon_manager.draw(
+                self.girl.x, self.girl.y, self.girl.face_dir,
+                char_frame_index=self.girl.frame, char_frame_count=1, state_name='idle'
+            )
 
 class Run:
     IMAGE_KEY = 'run'
