@@ -157,6 +157,9 @@ class Goblin:
     def draw(self):
         self.state_machine.draw()
 
+    def handle_collision(self, group, other):
+        pass
+
 class MonsterSpawner:
     def __init__(self, count=4, x_range=(200, 1400), y_fixed=40):
         self.count = count
