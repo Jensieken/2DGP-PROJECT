@@ -206,7 +206,7 @@ class Idle:
         self.girl.frame = 0.0
 
     def do(self):
-        frame_count = 12
+        frame_count = 11
         self.girl.frame = (self.girl.frame + frame_count * ACTION_PER_TIME * game_framework.frame_time) % frame_count
 
     def exit(self, e):
@@ -218,7 +218,7 @@ class Idle:
         if not img:
             return
 
-        frame_count = 12
+        frame_count = 11
         frame_w = img.w // frame_count
         frame_h = img.h
 
