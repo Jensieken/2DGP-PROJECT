@@ -39,6 +39,8 @@ class ResourceManager:
         ResourceManager._images[key] = img
         return img
 
+class AttackHit:
+
 class Goblin:
     images = None
 
