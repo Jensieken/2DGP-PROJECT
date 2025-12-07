@@ -327,6 +327,7 @@ class Jump:
 
 class Fall:
     IMAGE_KEY = 'fall'
+    FALL_ANIM_SPEED = 10.0
 
     def __init__(self, girl):
         self.girl = girl
@@ -369,6 +370,8 @@ class Fall:
         frame_count = 2
         if not self.playing:
             return
+
+        speed_mul = self.FALL_ANIM_SPEED
 
         if self.in_air:
 
