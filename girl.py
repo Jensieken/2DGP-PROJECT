@@ -584,8 +584,8 @@ class Magic:
         self.playing = True
 
         try:
-            from monster import spawn_attack_hit
-            spawn_attack_hit(self.girl.x, self.girl.y + 10, self.girl.face_dir, damage=50)
+            from magic_effect import spawn_magic_effect
+            spawn_magic_effect(self.girl.x, self.girl.y + 20, self.girl.face_dir, damage=50, spawn_hit=True, hit_w=140, hit_h=140)
         except Exception:
             pass
 
