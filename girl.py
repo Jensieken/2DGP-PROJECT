@@ -569,6 +569,12 @@ class Magic:
         self.timer = 0.0
         self.playing = True
 
+        try:
+            from monster import spawn_attack_hit
+            spawn_attack_hit(self.girl.x, self.girl.y + 10, self.girl.face_dir, damage=50)
+        except Exception:
+            pass
+
     def exit(self, e):
         self.playing = False
 

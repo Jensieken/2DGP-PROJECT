@@ -41,7 +41,7 @@ class ResourceManager:
 
 class AttackHit:
 
-    def __init__(self, x, y, face_dir=1, owner='girl', life_time=0.18, w=60, h=40):
+    def __init__(self, x, y, face_dir=1, owner='girl', life_time=0.18, w=60, h=40, damage=None):
         self.x = x
         self.y = y
         self.face_dir = face_dir
@@ -49,7 +49,12 @@ class AttackHit:
         self.life = life_time
         self.w = w
         self.h = h
-        # register into proper collision group and add to world
+
+        if damage is None:
+            self.damage = 20 if self.owner == 'girl' else 10
+        else:
+            self.damage = damage
+
         if self.owner == 'girl':
             game_world.add_collision_pair('weapon_vs_monster', self, None)
         else:
@@ -57,7 +62,6 @@ class AttackHit:
         game_world.add_object(self, 3)
 
     def update(self):
-        # life time 감소, 만료 시 제거
         self.life -= game_framework.frame_time
         if self.life <= 0:
             try:
@@ -66,7 +70,6 @@ class AttackHit:
                 pass
 
     def draw(self):
-        # 디버그용으로 박스 그림 (원하면 주석 처리)
         left, bottom, right, top = self.get_bb()
         draw_rectangle(left, bottom, right, top)
 
@@ -82,25 +85,18 @@ class AttackHit:
         return int(left), int(bottom), int(right), int(top)
 
     def handle_collision(self, group, other):
-        # 충돌하면 자신은 지운다. 데미지/상태 전환은 상대 객체에서 처리.
         try:
             game_world.remove_object(self)
         except Exception:
             pass
 
 
-def spawn_attack_hit(x, y, face_dir=1):
-    """
-    소녀의 공격에서 호출 (girl.py에서 import 사용 중).
-    """
-    return AttackHit(x + face_dir * 20, y, face_dir=face_dir, owner='girl')
+def spawn_attack_hit(x, y, face_dir=1, damage=None):
+    return AttackHit(x + face_dir * 20, y, face_dir=face_dir, owner='girl', damage=damage)
 
 
-def spawn_monster_attack(x, y, face_dir=-1):
-    """
-    고블린이 공격할 때 호출.
-    """
-    return AttackHit(x + face_dir * 20, y, face_dir=face_dir, owner='monster')
+def spawn_monster_attack(x, y, face_dir=-1, damage=None):
+    return AttackHit(x + face_dir * 20, y, face_dir=face_dir, owner='monster', damage=damage)
 
 class Goblin:
     images = None
@@ -277,7 +273,7 @@ class Goblin:
             self.timer = 0.0
             knockback = 40
             self.goblin.x += -self.goblin.face_dir * knockback
-            self.goblin.hp = max(0, getattr(self.goblin, 'hp', 30) - 10)
+
 
         def exit(self, e):
             self.playing = False
@@ -359,12 +355,18 @@ class Goblin:
     def handle_collision(self, group, other):
         try:
             if group == 'weapon_vs_monster':
-                damage = getattr(other, 'damage', 10)
+                damage = getattr(other, 'damage', 20)
                 self.hp = max(0, self.hp - damage)
-                try:
-                    self.state_machine.change_state(self.HIT)
-                except Exception:
-                    pass
+                if self.hp <= 0:
+                    try:
+                        game_world.remove_object(self)
+                    except Exception:
+                        pass
+                else:
+                    try:
+                        self.state_machine.change_state(self.HIT)
+                    except Exception:
+                        pass
         except Exception:
             pass
 
