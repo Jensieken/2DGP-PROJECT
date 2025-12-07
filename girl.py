@@ -425,8 +425,11 @@ class Normal_Attack:
     def do(self):
         frame_count = 7
         if self.playing:
-
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
+
+            ground_y = getattr(self.girl, 'ground_y', 0)
+            if self.girl.y > ground_y + 1:
+                self.girl.x += getattr(self.girl, 'dir', 0) * RUN_SPEED_PPS * game_framework.frame_time
 
         if self.girl.frame >= frame_count:
             self.girl.frame = frame_count - 1
