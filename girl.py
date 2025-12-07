@@ -567,8 +567,8 @@ class Magic:
                                     frame_h)
 
 
-class Strong_Magic:
-    IMAGE_KEY = 'strong_magic'
+class Spine:
+    IMAGE_KEY = 'spine'
 
     def __init__(self, girl):
         self.girl = girl
@@ -592,7 +592,7 @@ class Strong_Magic:
         self.playing = False
 
     def do(self):
-        frame_count = 13
+        frame_count = 8
         if self.playing:
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
@@ -607,7 +607,7 @@ class Strong_Magic:
         if not img:
             return
 
-        frame_count = 13
+        frame_count = 8
         frame_w = img.w // frame_count
         frame_h = img.h
 
@@ -636,7 +636,7 @@ class Girl:
 
             'magic': ResourceManager.load_image('magic', 'magic.png'),
 
-            'strong_magic' : ResourceManager.load_image('strong_magic', 'strong_magic.png')
+            'spine' : ResourceManager.load_image('spine', 'spine.png')
 
         }
 
@@ -657,9 +657,9 @@ class Girl:
 
         self.STAB = Stab(self)
 
-        self.MAGIC = Magic(self)
+        self.SPINE = Spine(self)
 
-        self.STRONG_MAGIC = Strong_Magic(self)
+        self.MAGIC = Magic(self)
 
 
 
@@ -672,9 +672,8 @@ class Girl:
                 space_down: self.JUMP,
                 q_down: self.NORMAL_ATTACK,
                 w_down: self.STAB,
-                e_down: self.MAGIC,
-                r_down: self.STRONG_MAGIC,
-
+                e_down: self.SPINE,
+                r_down: self.MAGIC
 
             },
 
@@ -686,8 +685,8 @@ class Girl:
                 space_down: self.JUMP,
                 q_down: self.NORMAL_ATTACK,
                 w_down: self.STAB,
-                e_down: self.MAGIC,
-                r_down: self.STRONG_MAGIC,
+                e_down: self.SPINE,
+                r_down: self.MAGIC
 
             },
             self.JUMP: {
@@ -700,9 +699,9 @@ class Girl:
 
             self.STAB: {},
 
-            self.MAGIC: {},
+            self.SPINE: {},
 
-            self.STRONG_MAGIC: {}
+            self.MAGIC: {}
 
         }
 
