@@ -23,7 +23,7 @@ def _get_hp_font():
         try:
             base_dir = os.path.dirname(__file__)
             font_path = os.path.join(base_dir, 'ENCR10B.TTF')
-            # 무조건 ENCR10B.TTF 사용
+
             _hp_font = load_font(font_path, 16)
         except Exception as e:
             print(f'[Font] ENCR10B.TTF 로드 실패: {font_path} -> {e}')
@@ -405,26 +405,24 @@ class Goblin:
             pass
 
 class MonsterSpawner:
-    def __init__(self, count=5, x_range=(200, 1400), y_fixed=40, respawn_interval=3.0, respawn_count=5, max_total_spawns=100):
+    def __init__(self, count=4, x_range=(200, 1400), y_fixed=40,
+                 respawn_interval=3.0, respawn_count=5, max_total_spawns=100):
         self.count = count
         self.x_range = x_range
         self.y_fixed = y_fixed
 
-        self.respawn_interval = respawn_interval
-        self.respawn_count = respawn_count
-        self.max_total_spawns = max_total_spawns
+        self.respawn_interval = respawn_interval  # 3초마다
+        self.respawn_count = respawn_count  # 5마리씩
+        self.max_total_spawns = max_total_spawns  # 최대 100마리
 
         self.respawn_timer = 0.0
         self.total_spawned = 0
 
-
         self.spawn_initial()
 
-        # game_world에 업데이트를 위해 추가
         game_world.add_object(self, 4)
 
     def spawn_initial(self):
-
         for _ in range(self.count):
             if self.total_spawned >= self.max_total_spawns:
                 break
@@ -433,11 +431,13 @@ class MonsterSpawner:
             self.total_spawned += 1
 
     def update(self):
-
         import game_framework
 
-
         if self.total_spawned >= self.max_total_spawns:
+            if not hasattr(self, 'boss_spawned') or not self.boss_spawned:
+                self.boss_spawned = True
+                print("[MonsterSpawner] 100마리 처치 완료! 보스 고블린 출현!")
+                create_boss_goblin(800, self.y_fixed)
             return
 
         self.respawn_timer += game_framework.frame_time
@@ -445,6 +445,7 @@ class MonsterSpawner:
         if self.respawn_timer >= self.respawn_interval:
             self.respawn_timer = 0.0
 
+            # respawn_count 만큼 몬스터 생성
             for _ in range(self.respawn_count):
                 if self.total_spawned >= self.max_total_spawns:
                     break
@@ -457,11 +458,169 @@ class MonsterSpawner:
     def draw(self):
         pass
 
-    def spawn_initial(self):
-        for _ in range(self.count):
-            x = random.randint(self.x_range[0], self.x_range[1])
-            create_goblin(x, self.y_fixed)
+
+def create_goblin(x, y):
+    return Goblin(x, y)
+
+
+class BossGoblin(Goblin):
+
+    AGGRO_DISTANCE = 400
+    ATTACK_RANGE = 100
+
+    def __init__(self, x=800, y=120):
+        super().__init__(x, y)
+        self.hp = 300
+        self.speed = 80.0
+        self.scale = 3.0  # 3배 크기
+
+    def draw(self):
+        self.state_machine.draw()  # 일반 draw 호출 (각 상태의 draw가 scale 처리)
+
+        try:
+            if getattr(self, 'attack_cooldown', 0.0) > 0.0:
+                import game_framework
+                self.attack_cooldown = max(0.0, self.attack_cooldown - game_framework.frame_time)
+        except Exception:
+            pass
+
+        try:
+            font = _get_hp_font()
+            if font:
+                hp_text = f'BOSS HP: {self.hp}'
+                font.draw(int(self.x - 40), int(self.y + 150), hp_text, (255, 0, 0))
+        except Exception:
+            pass
+
+    def get_bb(self):
+        w = 40 * 3
+        h = 60 * 3
+        left = int(self.x - w // 2)
+        right = int(self.x + w // 2)
+        bottom = int(self.y - 30)
+        top = int(self.y + h - 30)
+        return left, bottom, right, top
+
+    def handle_collision(self, group, other):
+        try:
+            if group == 'weapon_vs_monster':
+                damage = getattr(other, 'damage', 20)
+                self.hp = max(0, self.hp - damage)
+                if self.hp <= 0:
+                    try:
+                        for layer in game_world.world:
+                            for o in layer:
+                                if getattr(o, '__class__', None).__name__ == 'Girl':
+                                    o.hp = min(200, o.hp + 5)
+                                    print(f'BOSS DEFEATED! Girl HP: {o.hp}')
+                                    break
+
+                        import play_mode
+                        play_mode.game_clear = True
+                        play_mode.game_clear_timer = 3.0
+
+                        game_world.remove_object(self)
+                    except Exception as e:
+                        print(f'Boss defeat error: {e}')
+                        pass
+                else:
+                    try:
+                        self.state_machine.change_state(self.HIT)
+                    except Exception:
+                        pass
+        except Exception:
+            pass
+
+
+class BossGoblin_Idle(Goblin.Idle):
+
+    def draw(self):
+        img = self.goblin.get_image(self.IMAGE_KEY)
+        if not img: return
+        frame_count = 1
+        fw = img.w // frame_count
+        fh = img.h
+        frame = int(self.goblin.frame) % frame_count
+        scale = getattr(self.goblin, 'scale', 1.0)
+        if self.goblin.face_dir == 1:
+            img.clip_draw(frame * fw, 0, fw, fh, self.goblin.x, self.goblin.y, fw * scale, fh * scale)
+        else:
+            img.clip_composite_draw(frame * fw, 0, fw, fh, 0, 'h', self.goblin.x, self.goblin.y, fw * scale, fh * scale)
+
+
+class BossGoblin_Run(Goblin.Run):
+    def draw(self):
+        img = self.goblin.get_image(self.IMAGE_KEY)
+        if not img: return
+        frame_count = 4
+        fw = img.w // frame_count
+        fh = img.h
+        frame = int(self.goblin.frame) % frame_count
+        scale = getattr(self.goblin, 'scale', 1.0)
+        if self.goblin.face_dir == 1:
+            img.clip_draw(frame * fw, 0, fw, fh, self.goblin.x, self.goblin.y, fw * scale, fh * scale)
+        else:
+            img.clip_composite_draw(frame * fw, 0, fw, fh, 0, 'h', self.goblin.x, self.goblin.y, fw * scale, fh * scale)
+
+
+class BossGoblin_Attack(Goblin.Attack):
+    def enter(self, e):
+        self.goblin.frame = 0.0
+        self.playing = True
+        self._hit_spawned = False
+        try:
+            self.goblin.attack_cooldown = 2.0
+            spawn_monster_attack(self.goblin.x, self.goblin.y, self.goblin.face_dir, damage=30)  # 30 데미지
+            self._hit_spawned = True
+        except Exception:
+            pass
+
+    def draw(self):
+        img = self.goblin.get_image(self.IMAGE_KEY)
+        if not img: return
+        frame_count = 3
+        fw = img.w // frame_count
+        fh = img.h
+        frame = int(min(self.goblin.frame, frame_count - 1))
+        scale = getattr(self.goblin, 'scale', 1.0)
+        if self.goblin.face_dir == 1:
+            img.clip_draw(frame * fw, 0, fw, fh, self.goblin.x, self.goblin.y, fw * scale, fh * scale)
+        else:
+            img.clip_composite_draw(frame * fw, 0, fw, fh, 0, 'h', self.goblin.x, self.goblin.y, fw * scale, fh * scale)
+
+
+class BossGoblin_Hit(Goblin.Hit):
+    def draw(self):
+        img = self.goblin.get_image(self.IMAGE_KEY)
+        if not img: return
+        frame_count = 2
+        fw = img.w // frame_count
+        fh = img.h
+        frame = int(min(self.goblin.frame, frame_count - 1))
+        scale = getattr(self.goblin, 'scale', 1.0)
+        if self.goblin.face_dir == 1:
+            img.clip_draw(frame * fw, 0, fw, fh, self.goblin.x, self.goblin.y, fw * scale, fh * scale)
+        else:
+            img.clip_composite_draw(frame * fw, 0, fw, fh, 0, 'h', self.goblin.x, self.goblin.y, fw * scale, fh * scale)
 
 
 def create_goblin(x, y):
     return Goblin(x, y)
+
+
+def create_boss_goblin(x, y):
+    boss = BossGoblin(x, y)
+
+    boss.IDLE = BossGoblin_Idle(boss)
+    boss.RUN = BossGoblin_Run(boss)
+    boss.ATTACK = BossGoblin_Attack(boss)
+    boss.HIT = BossGoblin_Hit(boss)
+
+    transitions = {
+        boss.IDLE: {},
+        boss.RUN: {},
+        boss.ATTACK: {},
+        boss.HIT: {}
+    }
+    boss.state_machine = StateMachine(boss.IDLE, transitions)
+    return boss
