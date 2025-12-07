@@ -400,10 +400,15 @@ class Normal_Attack:
             elif event.key == SDLK_LEFT:
                 self.girl.face_dir = -1
 
-        if getattr(self.girl, 'ground_y', self.girl.y) <= self.girl.y + 1:
-            self.girl.dir = 0
+        ground_y = getattr(self.girl, 'ground_y', self.girl.y)
+        in_air = self.girl.y > ground_y + 1
 
-        self.girl.dir = 0
+        if in_air:
+            jump_dir = getattr(self.girl.JUMP, 'dir_on_jump', 0)
+            self.girl.air_dir = jump_dir
+            self.girl.dir = jump_dir
+        else:
+            self.girl.dir = 0
         self.girl.frame = 0.0
         self.timer = 0.0
         self.playing = True
