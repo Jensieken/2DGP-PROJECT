@@ -332,39 +332,80 @@ class Fall:
         self.girl = girl
         self.timer = 0.0
         self.playing = False
+        self.in_air = False
 
     def enter(self, e):
-        self.girl.dir = 0
+        if e and e[0] == 'INPUT':
+            event = e[1]
+            if event.key == SDLK_RIGHT:
+                self.girl.face_dir = 1
+            elif event.key == SDLK_LEFT:
+                self.girl.face_dir = -1
+
+        ground_y = getattr(self.girl, 'ground_y', self.girl.y)
+        self.in_air = self.girl.y > ground_y + 1
+
+        if not self.in_air:
+            self.girl.dir = 0
         self.girl.frame = 0.0
         self.timer = 0.0
         self.playing = True
+        try:
+            from monster import spawn_attack_hit
+            spawn_attack_hit(self.girl.x, self.girl.y + 10, self.girl.face_dir)
+        except Exception:
+            pass
 
     def exit(self, e):
         self.playing = False
+        self.in_air = False
 
     def do(self):
         import game_framework
 
-        frame_count = self.get_frame_count()
-        if self.playing:
-            self.girl.frame += frame_count * ACTION_PER_TIME * 2.0 * game_framework.frame_time
+        frame_count = 7
+        if not self.playing:
+            return
+
+        if self.in_air:
+            # Jump 물리를 위임하기 전 상태를 기록
+            prev_state = getattr(self.girl.state_machine, 'current_state', None)
+            try:
+                self.girl.JUMP.do()
+            except Exception:
+                pass
+
+            # Jump.do()가 상태를 변경했다면 더 이상 공격 상태에서 위치 덮어쓰지 않음
+            curr_state = getattr(self.girl.state_machine, 'current_state', None)
+            if curr_state is not None and curr_state is not prev_state and curr_state is not self.girl.NORMAL_ATTACK:
+                self.playing = False
+                return
+
+            # 착지 허용 오차로 스냅 처리 (소수점/프레임 오차 방지)
+            ground_y = getattr(self.girl, 'ground_y', 0)
+            LAND_TOLERANCE = 1.0
+            if self.girl.y <= ground_y + LAND_TOLERANCE:
+                self.girl.y = ground_y
+                self.playing = False
+                # 착지 후 정상적인 지상 흐름으로 넘김
+                self.girl.state_machine.change_state(self.girl.FALL)
+                return
+
+            # 공격 애니메이션 진행 (위치 업데이트는 Jump가 담당)
+            self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
+        else:
+            # 지상 공격은 기존 로직 유지
+            self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
         if self.girl.frame >= frame_count:
             self.girl.frame = frame_count - 1
             self.playing = False
 
-            if getattr(self.girl, 'stop_after_jump', False):
-                self.girl.stop_after_jump = False
-                self.girl.dir = 0
-                self.girl.state_machine.change_state(self.girl.IDLE)
+            ground_y = getattr(self.girl, 'ground_y', 0)
+            if self.girl.y > ground_y + 1:
+                self.girl.state_machine.change_state(self.girl.FALL)
             else:
-                if any_dir_key_pressed(None):
-                    self.girl.state_machine.change_state(self.girl.RUN)
-                else:
-                    self.girl.state_machine.change_state(self.girl.IDLE)
-
-    def get_frame_count(self):
-        return 2
+                finish_to_idle_or_run(self.girl)
 
     def draw(self):
         key = self.IMAGE_KEY
@@ -372,7 +413,7 @@ class Fall:
         if not img:
             return
 
-        frame_count = self.get_frame_count()
+        frame_count = 7
         frame_w = img.w // frame_count
         frame_h = img.h
 
@@ -391,11 +432,7 @@ class Normal_Attack:
         self.girl = girl
         self.timer = 0.0
         self.playing = False
-
         self.in_air = False
-        self.velocity_y = 0.0
-        self.gravity = -2000.0
-        self.dir_on_jump = 0
 
     def enter(self, e):
         if e and e[0] == 'INPUT':
@@ -406,14 +443,11 @@ class Normal_Attack:
                 self.girl.face_dir = -1
 
         ground_y = getattr(self.girl, 'ground_y', self.girl.y)
-        in_air = self.girl.y > ground_y + 1
+        self.in_air = self.girl.y > ground_y + 1
 
-        if in_air:
-            jump_dir = getattr(self.girl.JUMP, 'dir_on_jump', 0)
-            self.girl.air_dir = jump_dir
-            self.girl.dir = jump_dir
-        else:
+        if not self.in_air:
             self.girl.dir = 0
+
         self.girl.frame = 0.0
         self.timer = 0.0
         self.playing = True
@@ -426,15 +460,29 @@ class Normal_Attack:
 
     def exit(self, e):
         self.playing = False
+        self.in_air = False
 
     def do(self):
+        import game_framework
+
         frame_count = 7
-        if self.playing:
-            self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
+        if not self.playing:
+            return
+
+        if self.in_air:
+            try:
+                self.girl.JUMP.do()
+            except Exception:
+                pass
 
             ground_y = getattr(self.girl, 'ground_y', 0)
-            if self.girl.y > ground_y + 1:
-                self.girl.x += getattr(self.girl, 'dir', 0) * RUN_SPEED_PPS * game_framework.frame_time
+            if self.girl.y <= ground_y:
+                self.playing = False
+                return
+
+            self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
+        else:
+            self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
         if self.girl.frame >= frame_count:
             self.girl.frame = frame_count - 1
