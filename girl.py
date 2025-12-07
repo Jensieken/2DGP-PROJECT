@@ -424,10 +424,14 @@ class Normal_Attack:
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
         if self.girl.frame >= frame_count:
-
             self.girl.frame = frame_count - 1
             self.playing = False
-            finish_to_idle_or_run(self.girl)
+
+            ground_y = getattr(self.girl, 'ground_y', 0)
+            if self.girl.y > ground_y + 1:
+                self.girl.state_machine.change_state(self.girl.FALL)
+            else:
+                finish_to_idle_or_run(self.girl)
 
     def draw(self):
         key = self.IMAGE_KEY
@@ -526,6 +530,7 @@ class Girl:
         self.weapon_manager = create_default_weapon_manager()
 
         self.x, self.y = 50, 120
+        self.ground_y = self.y
         self.frame = 0
         self.face_dir = 1
         self.dir = 0
