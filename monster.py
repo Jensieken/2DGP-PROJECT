@@ -1,6 +1,6 @@
 import os
 import random
-from pico2d import load_image, draw_rectangle
+from pico2d import load_image, draw_rectangle, load_font
 import game_framework
 import game_world
 from state_machine import StateMachine
@@ -15,6 +15,20 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 10.0
+
+_hp_font = None
+def _get_hp_font():
+    global _hp_font
+    if _hp_font is None:
+        try:
+            base_dir = os.path.dirname(__file__)
+            font_path = os.path.join(base_dir, 'ENCR10B.TTF')
+            # 무조건 ENCR10B.TTF 사용
+            _hp_font = load_font(font_path, 16)
+        except Exception as e:
+            print(f'[Font] ENCR10B.TTF 로드 실패: {font_path} -> {e}')
+            _hp_font = None
+    return _hp_font
 
 class ResourceManager:
     _images = {}\
@@ -342,6 +356,14 @@ class Goblin:
 
     def draw(self):
         self.state_machine.draw()
+
+        try:
+            font = _get_hp_font()
+            if font:
+                hp_text = f'HP: {self.hp}'
+                font.draw(int(self.x - 20), int(self.y + 60), hp_text, (255, 0, 0))
+        except Exception:
+            pass
 
     def get_bb(self):
         w = 40

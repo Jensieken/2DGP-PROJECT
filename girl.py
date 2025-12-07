@@ -98,6 +98,20 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 
+_hp_font = None
+
+def _get_hp_font():
+    global _hp_font
+    if _hp_font is None:
+        try:
+            base_dir = os.path.dirname(__file__)
+            font_path = os.path.join(base_dir, 'ENCR10B.TTF')
+            _hp_font = load_font(font_path, 18)
+        except Exception as e:
+            print(f'[Font] ENCR10B.TTF 로드 실패: {font_path} -> {e}')
+            _hp_font = None
+    return _hp_font
+
 class ResourceManager:
     _images = {}\
 
@@ -717,6 +731,14 @@ class Girl:
 
     def draw(self):
         self.state_machine.draw()
+
+        try:
+            font = _get_hp_font()
+            hp_text = f'HP: {self.hp}'
+
+            font.draw(int(self.x - 20), int(self.y + 70), hp_text, (255, 0, 0))
+        except Exception:
+            pass
 
     def handle_collision(self, group, other):
         try:
