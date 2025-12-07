@@ -405,12 +405,57 @@ class Goblin:
             pass
 
 class MonsterSpawner:
-    def __init__(self, count=4, x_range=(200, 1400), y_fixed=40):
+    def __init__(self, count=5, x_range=(200, 1400), y_fixed=40, respawn_interval=3.0, respawn_count=5, max_total_spawns=100):
         self.count = count
         self.x_range = x_range
         self.y_fixed = y_fixed
 
+        self.respawn_interval = respawn_interval
+        self.respawn_count = respawn_count
+        self.max_total_spawns = max_total_spawns
+
+        self.respawn_timer = 0.0
+        self.total_spawned = 0
+
+
         self.spawn_initial()
+
+        # game_world에 업데이트를 위해 추가
+        game_world.add_object(self, 4)
+
+    def spawn_initial(self):
+
+        for _ in range(self.count):
+            if self.total_spawned >= self.max_total_spawns:
+                break
+            x = random.randint(self.x_range[0], self.x_range[1])
+            create_goblin(x, self.y_fixed)
+            self.total_spawned += 1
+
+    def update(self):
+
+        import game_framework
+
+
+        if self.total_spawned >= self.max_total_spawns:
+            return
+
+        self.respawn_timer += game_framework.frame_time
+
+        if self.respawn_timer >= self.respawn_interval:
+            self.respawn_timer = 0.0
+
+            for _ in range(self.respawn_count):
+                if self.total_spawned >= self.max_total_spawns:
+                    break
+                x = random.randint(self.x_range[0], self.x_range[1])
+                create_goblin(x, self.y_fixed)
+                self.total_spawned += 1
+
+            print(f"[MonsterSpawner] 총 스폰된 몬스터: {self.total_spawned}/{self.max_total_spawns}")
+
+    def draw(self):
+        pass
 
     def spawn_initial(self):
         for _ in range(self.count):
