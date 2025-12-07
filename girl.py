@@ -363,38 +363,37 @@ class Fall:
     def do(self):
         import game_framework
 
-        frame_count = 7
+        frame_count = 2
         if not self.playing:
             return
 
         if self.in_air:
-            # Jump 물리를 위임하기 전 상태를 기록
+
             prev_state = getattr(self.girl.state_machine, 'current_state', None)
             try:
                 self.girl.JUMP.do()
             except Exception:
                 pass
 
-            # Jump.do()가 상태를 변경했다면 더 이상 공격 상태에서 위치 덮어쓰지 않음
+
             curr_state = getattr(self.girl.state_machine, 'current_state', None)
             if curr_state is not None and curr_state is not prev_state and curr_state is not self.girl.NORMAL_ATTACK:
                 self.playing = False
                 return
 
-            # 착지 허용 오차로 스냅 처리 (소수점/프레임 오차 방지)
+
             ground_y = getattr(self.girl, 'ground_y', 0)
             LAND_TOLERANCE = 1.0
             if self.girl.y <= ground_y + LAND_TOLERANCE:
                 self.girl.y = ground_y
                 self.playing = False
-                # 착지 후 정상적인 지상 흐름으로 넘김
+
                 self.girl.state_machine.change_state(self.girl.FALL)
                 return
 
-            # 공격 애니메이션 진행 (위치 업데이트는 Jump가 담당)
+
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
         else:
-            # 지상 공격은 기존 로직 유지
             self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
 
         if self.girl.frame >= frame_count:
@@ -413,7 +412,7 @@ class Fall:
         if not img:
             return
 
-        frame_count = 7
+        frame_count = 2
         frame_w = img.w // frame_count
         frame_h = img.h
 
