@@ -54,8 +54,8 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
         else:
-            global game_over
-            if not game_over and girl:
+            global game_over, game_clear
+            if not game_over and not game_clear and girl:
                 girl.handle_event(event)
 
 def init():
@@ -74,16 +74,20 @@ def init():
     spawner = MonsterSpawner(count=4, x_range=(200, 1400), y_fixed=120)
 
 def update():
-    global game_over, game_over_timer
+    global game_over, game_over_timer, game_clear, game_clear_timer
     import game_framework
 
-    if not game_over:
+    if not game_over and not game_clear:
         game_world.update()
         game_world.handle_collisions()
 
         if girl and getattr(girl, 'hp', 1) <= 0:
             game_over = True
             game_over_timer = 2.5
+    elif game_clear:
+        game_clear_timer -= game_framework.frame_time
+        if game_clear_timer <= 0.0:
+            game_framework.quit()
     else:
         game_over_timer -= game_framework.frame_time
         if game_over_timer <= 0.0:
@@ -99,6 +103,15 @@ def draw():
             if font:
                 text = 'GAME OVER'
                 font.draw(800 - 220, 400, text, (255, 0, 0))
+        except Exception:
+            pass
+
+    if game_clear:
+        try:
+            font = _get_game_clear_font()
+            if font:
+                text = 'GAME CLEAR'
+                font.draw(800 - 250, 400, text, (0, 255, 0))
         except Exception:
             pass
 
