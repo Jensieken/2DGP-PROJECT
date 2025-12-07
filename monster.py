@@ -198,12 +198,13 @@ class Goblin:
                 dx = player.x - self.goblin.x
                 dist = abs(dx)
                 if dist <= self.goblin.ATTACK_RANGE:
-
-                    self.goblin.face_dir = 1 if dx > 0 else -1
-                    self.goblin.state_machine.change_state(self.goblin.ATTACK)
-                    return
+                    if getattr(self.goblin, 'attack_cooldown', 0.0) <= 0.0:
+                        self.goblin.face_dir = 1 if dx > 0 else -1
+                        self.goblin.state_machine.change_state(self.goblin.ATTACK)
+                        return
+                    else:
+                        self.goblin.face_dir = 1 if dx > 0 else -1
                 elif dist <= self.goblin.AGGRO_DISTANCE:
-
                     self.goblin.dir = 1 if dx > 0 else -1
                     self.goblin.face_dir = self.goblin.dir
 
@@ -215,11 +216,10 @@ class Goblin:
 
             self.timer += game_framework.frame_time
             if self.timer >= random.uniform(1.0, 3.0):
-                if random.random() < 0.25:
+                if random.random() < 0.25 and getattr(self.goblin, 'attack_cooldown', 0.0) <= 0.0:
                     self.goblin.state_machine.change_state(self.goblin.ATTACK)
                 else:
                     self.goblin.state_machine.change_state(self.goblin.IDLE)
-
         def draw(self):
             img = self.goblin.get_image(self.IMAGE_KEY)
             if not img: return
@@ -243,11 +243,11 @@ class Goblin:
             self.playing = True
             self._hit_spawned = False
             try:
+                self.goblin.attack_cooldown = 1.0
                 spawn_monster_attack(self.goblin.x, self.goblin.y, self.goblin.face_dir)
                 self._hit_spawned = True
             except Exception:
                 pass
-
         def exit(self, e):
             self.playing = False
             self._hit_spawned = False
@@ -332,6 +332,8 @@ class Goblin:
         self.speed = 100.0
         self.hp = 30
 
+        self.attack_cooldown = 0.0
+
         self.IDLE = self.__class__.Idle(self)
         self.RUN = self.__class__.Run(self)
         self.ATTACK = self.__class__.Attack(self)
@@ -356,6 +358,12 @@ class Goblin:
 
     def draw(self):
         self.state_machine.draw()
+        try:
+            if getattr(self, 'attack_cooldown', 0.0) > 0.0:
+                import game_framework
+                self.attack_cooldown = max(0.0, self.attack_cooldown - game_framework.frame_time)
+        except Exception:
+            pass
 
         try:
             font = _get_hp_font()
