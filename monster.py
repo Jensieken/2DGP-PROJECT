@@ -105,6 +105,17 @@ def spawn_monster_attack(x, y, face_dir=-1):
 class Goblin:
     images = None
 
+    AGGRO_DISTANCE = 250
+    ATTACK_RANGE = 60
+
+    def find_player(self):
+
+        for layer in game_world.world:
+            for o in layer:
+                if getattr(o, '__class__', None).__name__ == 'Girl':
+                    return o
+        return None
+
     class Idle:
         IMAGE_KEY = 'idle'
         def __init__(self, goblin):
@@ -119,13 +130,25 @@ class Goblin:
             self.duration = random.uniform(0.8, 2.5)
         def exit(self, e):
             pass
+
         def do(self):
             import game_framework
             frame_count = 1
             self.goblin.frame = (self.goblin.frame + frame_count * ACTION_PER_TIME * game_framework.frame_time) % frame_count
             self.timer += game_framework.frame_time
+
+            player = self.goblin.find_player()
+            if player:
+                dx = player.x - self.goblin.x
+                if abs(dx) <= self.goblin.AGGRO_DISTANCE:
+                    self.goblin.face_dir = 1 if dx > 0 else -1
+                    self.goblin.dir = self.goblin.face_dir
+                    self.goblin.state_machine.change_state(self.goblin.RUN)
+                    return
+
             if self.timer >= self.duration:
                 self.goblin.state_machine.change_state(self.goblin.RUN)
+
         def draw(self):
             img = self.goblin.get_image(self.IMAGE_KEY)
             if not img: return
@@ -148,25 +171,45 @@ class Goblin:
             self.goblin.frame = 0.0
             self.timer = 0.0
             self.duration = random.uniform(1.0, 3.0)
-            self.goblin.dir = random.choice([-1, 1])
+            if getattr(self.goblin, 'dir', 0) == 0:
+                self.goblin.dir = random.choice([-1, 1])
             self.goblin.face_dir = self.goblin.dir
+
         def exit(self, e):
             pass
+
         def do(self):
             import game_framework
             frame_count = 4
             self.goblin.frame = (self.goblin.frame + frame_count * ACTION_PER_TIME * game_framework.frame_time) % frame_count
+
+            player = self.goblin.find_player()
+            if player:
+                dx = player.x - self.goblin.x
+                dist = abs(dx)
+                if dist <= self.goblin.ATTACK_RANGE:
+
+                    self.goblin.face_dir = 1 if dx > 0 else -1
+                    self.goblin.state_machine.change_state(self.goblin.ATTACK)
+                    return
+                elif dist <= self.goblin.AGGRO_DISTANCE:
+
+                    self.goblin.dir = 1 if dx > 0 else -1
+                    self.goblin.face_dir = self.goblin.dir
+
             self.goblin.x += self.goblin.dir * self.goblin.speed * game_framework.frame_time
             if self.goblin.x < 20:
                 self.goblin.x = 20; self.goblin.dir = 1; self.goblin.face_dir = 1
             elif self.goblin.x > 1580:
                 self.goblin.x = 1580; self.goblin.dir = -1; self.goblin.face_dir = -1
+
             self.timer += game_framework.frame_time
             if self.timer >= random.uniform(1.0, 3.0):
                 if random.random() < 0.25:
                     self.goblin.state_machine.change_state(self.goblin.ATTACK)
                 else:
                     self.goblin.state_machine.change_state(self.goblin.IDLE)
+
         def draw(self):
             img = self.goblin.get_image(self.IMAGE_KEY)
             if not img: return
@@ -184,11 +227,21 @@ class Goblin:
         def __init__(self, goblin):
             self.goblin = goblin
             self.playing = False
+            self._hit_spawned = False
         def enter(self, e):
             self.goblin.frame = 0.0
             self.playing = True
+            self._hit_spawned = False
+            try:
+                spawn_monster_attack(self.goblin.x, self.goblin.y, self.goblin.face_dir)
+                self._hit_spawned = True
+            except Exception:
+                pass
+
         def exit(self, e):
             self.playing = False
+            self._hit_spawned = False
+
         def do(self):
             import game_framework
             frame_count = 3
@@ -198,6 +251,7 @@ class Goblin:
                 self.goblin.frame = frame_count - 1
                 self.playing = False
                 self.goblin.state_machine.change_state(self.goblin.IDLE)
+
         def draw(self):
             img = self.goblin.get_image(self.IMAGE_KEY)
             if not img: return
@@ -216,6 +270,7 @@ class Goblin:
             self.goblin = goblin
             self.playing = False
             self.timer = 0.0
+
         def enter(self, e):
             self.goblin.frame = 0.0
             self.playing = True
@@ -223,8 +278,10 @@ class Goblin:
             knockback = 40
             self.goblin.x += -self.goblin.face_dir * knockback
             self.goblin.hp = max(0, getattr(self.goblin, 'hp', 30) - 10)
+
         def exit(self, e):
             self.playing = False
+
         def do(self):
             import game_framework
             frame_count = 2
@@ -234,6 +291,7 @@ class Goblin:
             if self.timer >= 0.4 or self.goblin.frame >= frame_count:
                 self.playing = False
                 self.goblin.state_machine.change_state(self.goblin.IDLE)
+
         def draw(self):
             img = self.goblin.get_image(self.IMAGE_KEY)
             if not img: return
@@ -276,6 +334,7 @@ class Goblin:
             self.HIT: {}
         }
         self.state_machine = StateMachine(self.IDLE, transitions)
+
         game_world.add_collision_pair('weapon_vs_monster', None, self)
         game_world.add_object(self, 2)
 
