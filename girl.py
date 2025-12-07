@@ -671,7 +671,7 @@ class Girl:
         self.face_dir = 1
         self.dir = 0
         self.stop_after_jump = False
-        self.hp = 200
+        self.hp = 600
 
         self.IDLE = Idle(self)
         self.RUN = Run(self)
