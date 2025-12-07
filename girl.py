@@ -673,12 +673,22 @@ class Girl:
         }
 
         self.state_machine = StateMachine(self.IDLE, transitions)
+        game_world.add_collision_pair('monster_vs_player', None, self)
 
     def get_image(self, key):
         return self.images.get(key)
 
     def update(self):
         self.state_machine.update()
+
+    def get_bb(self):
+        w = 40
+        h = 60
+        left = int(self.x - w // 2)
+        right = int(self.x + w // 2)
+        bottom = int(self.y - 10)
+        top = int(self.y + h - 10)
+        return left, bottom, right, top
 
     def handle_event(self, event):
         global right_pressed, left_pressed
@@ -703,4 +713,17 @@ class Girl:
         self.state_machine.draw()
 
     def handle_collision(self, group, other):
-        pass
+        try:
+            if group == 'monster_vs_player':
+                damage = getattr(other, 'damage', 10)
+                self.hp = max(0, self.hp - damage)
+                try:
+                    kb_dir = other.face_dir
+                except Exception:
+                    kb_dir = 1
+                kb = 40
+                self.x += -kb_dir * kb
+                self.stop_after_jump = True
+                print(f'Girl hit: hp={self.hp}')
+        except Exception:
+            pass

@@ -41,6 +41,67 @@ class ResourceManager:
 
 class AttackHit:
 
+    def __init__(self, x, y, face_dir=1, owner='girl', life_time=0.18, w=60, h=40):
+        self.x = x
+        self.y = y
+        self.face_dir = face_dir
+        self.owner = owner
+        self.life = life_time
+        self.w = w
+        self.h = h
+        # register into proper collision group and add to world
+        if self.owner == 'girl':
+            game_world.add_collision_pair('weapon_vs_monster', self, None)
+        else:
+            game_world.add_collision_pair('monster_vs_player', self, None)
+        game_world.add_object(self, 3)
+
+    def update(self):
+        # life time 감소, 만료 시 제거
+        self.life -= game_framework.frame_time
+        if self.life <= 0:
+            try:
+                game_world.remove_object(self)
+            except Exception:
+                pass
+
+    def draw(self):
+        # 디버그용으로 박스 그림 (원하면 주석 처리)
+        left, bottom, right, top = self.get_bb()
+        draw_rectangle(left, bottom, right, top)
+
+    def get_bb(self):
+        if self.face_dir == 1:
+            left = self.x
+            right = self.x + self.w
+        else:
+            left = self.x - self.w
+            right = self.x
+        bottom = self.y - (self.h // 2)
+        top = self.y + (self.h // 2)
+        return int(left), int(bottom), int(right), int(top)
+
+    def handle_collision(self, group, other):
+        # 충돌하면 자신은 지운다. 데미지/상태 전환은 상대 객체에서 처리.
+        try:
+            game_world.remove_object(self)
+        except Exception:
+            pass
+
+
+def spawn_attack_hit(x, y, face_dir=1):
+    """
+    소녀의 공격에서 호출 (girl.py에서 import 사용 중).
+    """
+    return AttackHit(x + face_dir * 20, y, face_dir=face_dir, owner='girl')
+
+
+def spawn_monster_attack(x, y, face_dir=-1):
+    """
+    고블린이 공격할 때 호출.
+    """
+    return AttackHit(x + face_dir * 20, y, face_dir=face_dir, owner='monster')
+
 class Goblin:
     images = None
 
@@ -49,7 +110,8 @@ class Goblin:
         def __init__(self, goblin):
             self.goblin = goblin
             self.timer = 0.0
-            self.duration = random.uniform(0.8, 2.5)
+            self.duration = 1.0
+
         def enter(self, e):
             self.goblin.dir = 0
             self.goblin.frame = 0.0
@@ -81,9 +143,11 @@ class Goblin:
         def __init__(self, goblin):
             self.goblin = goblin
             self.timer = 0.0
+            self.duration = 1.5
         def enter(self, e):
             self.goblin.frame = 0.0
             self.timer = 0.0
+            self.duration = random.uniform(1.0, 3.0)
             self.goblin.dir = random.choice([-1, 1])
             self.goblin.face_dir = self.goblin.dir
         def exit(self, e):
@@ -197,7 +261,8 @@ class Goblin:
         self.frame = 0.0
         self.face_dir = -1  # -1 left, 1 right
         self.dir = 0
-        self.speed = 100.0  # pixels per second
+        self.speed = 100.0
+        self.hp = 30
 
         self.IDLE = self.__class__.Idle(self)
         self.RUN = self.__class__.Run(self)
@@ -211,7 +276,7 @@ class Goblin:
             self.HIT: {}
         }
         self.state_machine = StateMachine(self.IDLE, transitions)
-
+        game_world.add_collision_pair('weapon_vs_monster', None, self)
         game_world.add_object(self, 2)
 
     def get_image(self, key):
@@ -223,10 +288,24 @@ class Goblin:
     def draw(self):
         self.state_machine.draw()
 
+    def get_bb(self):
+        w = 40
+        h = 60
+        left = int(self.x - w // 2)
+        right = int(self.x + w // 2)
+        bottom = int(self.y - 10)
+        top = int(self.y + h - 10)
+        return left, bottom, right, top
+
     def handle_collision(self, group, other):
         try:
             if group == 'weapon_vs_monster':
-                self.state_machine.change_state(self.HIT)
+                damage = getattr(other, 'damage', 10)
+                self.hp = max(0, self.hp - damage)
+                try:
+                    self.state_machine.change_state(self.HIT)
+                except Exception:
+                    pass
         except Exception:
             pass
 
