@@ -105,8 +105,12 @@ class AttackHit:
             pass
 
 
-def spawn_attack_hit(x, y, face_dir=1, damage=None):
-    return AttackHit(x + face_dir * 20, y, face_dir=face_dir, owner='girl', damage=damage)
+def spawn_attack_hit(x, y, face_dir=1, damage=None, w=None, h=None):
+    if w is None:
+        w = 60
+    if h is None:
+        h = 40
+    return AttackHit(x + face_dir * 20, y, face_dir=face_dir, owner='girl', damage=damage, w=w, h=h)
 
 
 def spawn_monster_attack(x, y, face_dir=-1, damage=None):
@@ -243,7 +247,7 @@ class Goblin:
             self.playing = True
             self._hit_spawned = False
             try:
-                self.goblin.attack_cooldown = 1.0
+                self.goblin.attack_cooldown = 2.0
                 spawn_monster_attack(self.goblin.x, self.goblin.y, self.goblin.face_dir)
                 self._hit_spawned = True
             except Exception:

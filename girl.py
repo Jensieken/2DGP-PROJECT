@@ -485,7 +485,7 @@ class Normal_Attack:
 
         try:
             from monster import spawn_attack_hit
-            spawn_attack_hit(self.girl.x, self.girl.y + 10, self.girl.face_dir)
+            spawn_attack_hit(self.girl.x, self.girl.y + 10, self.girl.face_dir, damage=None, w=120, h=60)
         except Exception:
             pass
 
