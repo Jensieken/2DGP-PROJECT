@@ -729,6 +729,11 @@ class Girl:
     def update(self):
         self.state_machine.update()
 
+        if self.x < 0:
+            self.x = 0
+        elif self.x > 1600:
+            self.x = 1600
+
     def get_bb(self):
         w = 40
         h = 60
