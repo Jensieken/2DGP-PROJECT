@@ -1,6 +1,6 @@
 import os
 from pico2d import load_image, get_time, load_font, draw_rectangle, close_canvas
-from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_q, SDLK_w, SDLK_e, SDLK_r, SDLK_i, SDLK_j, SDLK_g
+from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_q, SDLK_w, SDLK_i, SDLK_j, SDLK_g
 from weapon import Weapon, WeaponManager
 from weapons_config import create_default_weapon_manager
 
@@ -59,16 +59,6 @@ def w_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_w
 def w_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_w
-
-def e_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_e
-def e_up(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_e
-
-def r_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_r
-def r_up(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_r
 
 def i_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_i
@@ -461,65 +451,6 @@ class Normal_Attack:
             )
 
 
-class Stab:
-    IMAGE_KEY = 'stab'
-
-    def __init__(self, girl):
-        self.girl = girl
-        self.timer = 0.0
-        self.playing = False
-
-    def enter(self, e):
-        if e and e[0] == 'INPUT':
-            event = e[1]
-            if event.key == SDLK_RIGHT:
-                self.girl.face_dir = 1
-            elif event.key == SDLK_LEFT:
-                self.girl.face_dir = -1
-
-        self.girl.dir = 0
-        self.girl.frame = 0.0
-        self.timer = 0.0
-        self.playing = True
-
-    def exit(self, e):
-        self.playing = False
-
-    def do(self):
-        frame_count = 10
-        if self.playing:
-            self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
-
-        if self.girl.frame >= frame_count:
-            self.girl.frame = frame_count - 1
-            self.playing = False
-            finish_to_idle_or_run(self.girl)
-
-    def draw(self):
-        key = self.IMAGE_KEY
-        img = self.girl.get_image(key)
-        if not img:
-            return
-
-        frame_count = 10
-        frame_w = img.w // frame_count
-        frame_h = img.h
-
-        frame = int(min(self.girl.frame, frame_count - 1))
-
-        if self.girl.face_dir == 1:
-            img.clip_draw(frame * frame_w, 0, frame_w, frame_h, self.girl.x, self.girl.y)
-        else:
-            img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w,
-                                    frame_h)
-
-        if hasattr(self.girl, 'weapon_manager'):
-            self.girl.weapon_manager.draw(
-                self.girl.x, self.girl.y, self.girl.face_dir,
-                char_frame_index=self.girl.frame, char_frame_count=7, state_name='normal_attack'
-            )
-
-
 class Magic:
     IMAGE_KEY = 'magic'
 
@@ -573,65 +504,6 @@ class Magic:
                                     frame_h)
 
 
-class Spine:
-    IMAGE_KEY = 'spine'
-
-    def __init__(self, girl):
-        self.girl = girl
-        self.timer = 0.0
-        self.playing = False
-
-    def enter(self, e):
-        if e and e[0] == 'INPUT':
-            event = e[1]
-            if event.key == SDLK_RIGHT:
-                self.girl.face_dir = 1
-            elif event.key == SDLK_LEFT:
-                self.girl.face_dir = -1
-
-        self.girl.dir = 0
-        self.girl.frame = 0.0
-        self.timer = 0.0
-        self.playing = True
-
-    def exit(self, e):
-        self.playing = False
-
-    def do(self):
-        frame_count = 8
-        if self.playing:
-            self.girl.frame += frame_count * ACTION_PER_TIME * game_framework.frame_time
-
-        if self.girl.frame >= frame_count:
-            self.girl.frame = frame_count - 1
-            self.playing = False
-            finish_to_idle_or_run(self.girl)
-
-    def draw(self):
-        key = self.IMAGE_KEY
-        img = self.girl.get_image(key)
-        if not img:
-            return
-
-        frame_count = 8
-        frame_w = img.w // frame_count
-        frame_h = img.h
-
-        frame = int(min(self.girl.frame, frame_count - 1))
-
-        if self.girl.face_dir == 1:
-            img.clip_draw(frame * frame_w, 0, frame_w, frame_h, self.girl.x, self.girl.y)
-        else:
-            img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w,
-                                    frame_h)
-
-        if hasattr(self.girl, 'weapon_manager'):
-            self.girl.weapon_manager.draw(
-                self.girl.x, self.girl.y, self.girl.face_dir,
-                char_frame_index=self.girl.frame, char_frame_count=7, state_name='normal_attack'
-            )
-
-
 class Girl:
 
     def __init__(self):
@@ -644,11 +516,7 @@ class Girl:
             'fall': ResourceManager.load_image('fall', 'fall.png'),
             'normal_attack': ResourceManager.load_image('normal_attack', 'normal_attack.png'),
 
-            'stab': ResourceManager.load_image('stab', 'stab.png'),
-
-            'magic': ResourceManager.load_image('magic', 'magic.png'),
-
-            'spine' : ResourceManager.load_image('spine', 'spine.png')
+            'magic': ResourceManager.load_image('magic', 'magic.png')
 
         }
 
@@ -666,11 +534,6 @@ class Girl:
         self.JUMP = Jump(self)
         self.FALL = Fall(self)
         self.NORMAL_ATTACK = Normal_Attack(self)
-
-        self.STAB = Stab(self)
-
-        self.SPINE = Spine(self)
-
         self.MAGIC = Magic(self)
 
 
@@ -683,9 +546,7 @@ class Girl:
                 left_up: self.RUN,
                 space_down: self.JUMP,
                 q_down: self.NORMAL_ATTACK,
-                w_down: self.STAB,
-                e_down: self.SPINE,
-                r_down: self.MAGIC
+                w_down: self.MAGIC
 
             },
 
@@ -696,9 +557,7 @@ class Girl:
                 left_down: self.IDLE,
                 space_down: self.JUMP,
                 q_down: self.NORMAL_ATTACK,
-                w_down: self.STAB,
-                e_down: self.SPINE,
-                r_down: self.MAGIC
+                w_down: self.MAGIC
 
             },
             self.JUMP: {
@@ -708,10 +567,6 @@ class Girl:
 
             },
             self.NORMAL_ATTACK: {},
-
-            self.STAB: {},
-
-            self.SPINE: {},
 
             self.MAGIC: {}
 

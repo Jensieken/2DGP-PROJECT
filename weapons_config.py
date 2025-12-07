@@ -20,8 +20,11 @@ IDLE_OFFSETS = {
 }
 
 NORMAL_ATTACK_OFFSET = (0, 20)
-STAB_OFFSET = (15, 10)
-SPINE_OFFSET = (0, 26)
+
+STAB_OFFSET = (0, 20)
+
+SPINE_OFFSET = (0, 20)
+
 
 def create_default_weapon_manager():
     manager = WeaponManager()
@@ -32,9 +35,6 @@ def create_default_weapon_manager():
             'run': ('run_pink.png', 12, RUN_OFFSET, None),
             'idle': ('idle_pink.png', 1, (-50, 3), IDLE_OFFSETS),
             'normal_attack': ('normal_attack_pink.png', 7, NORMAL_ATTACK_OFFSET, None),
-            'stab': ('stab_pink.png', 10, STAB_OFFSET, None),
-            'spine': ('spine_pink.png', 8, SPINE_OFFSET, None)
-
         },
         default_state = 'run'
     )
