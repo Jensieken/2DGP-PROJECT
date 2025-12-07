@@ -569,9 +569,11 @@ class Girl:
 
             },
             self.JUMP: {
+                q_down: self.NORMAL_ATTACK
 
             },
             self.FALL: {
+                q_down: self.NORMAL_ATTACK
 
             },
             self.NORMAL_ATTACK: {},
