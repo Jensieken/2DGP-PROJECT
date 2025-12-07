@@ -1506,10 +1506,6 @@ class Girl:
     def handle_event(self, event):
         global right_pressed, left_pressed
         try:
-            if DEMO_MODE and (event.type == SDL_KEYDOWN or event.type == SDL_KEYUP):
-                if getattr(event, 'key', None) not in ALLOWED_KEYS:
-                    return
-
             if event.type == SDL_KEYDOWN:
                 if event.key == SDLK_RIGHT:
                     right_pressed = True
