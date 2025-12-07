@@ -14,6 +14,10 @@ game_over = False
 game_over_timer = 0.0
 _game_over_font = None
 
+game_clear = False
+game_clear_timer = 0.0
+_game_clear_font = None
+
 def _get_game_over_font():
     global _game_over_font
     if _game_over_font is None:
@@ -27,6 +31,20 @@ def _get_game_over_font():
             except Exception:
                 _game_over_font = None
     return _game_over_font
+
+def _get_game_clear_font():
+    global _game_clear_font
+    if _game_clear_font is None:
+        try:
+            base_dir = os.path.dirname(__file__)
+            font_path = os.path.join(base_dir, 'ENCR10B.TTF')
+            _game_clear_font = load_font(font_path, 72)
+        except Exception:
+            try:
+                _game_clear_font = load_font(None, 72)
+            except Exception:
+                _game_clear_font = None
+    return _game_clear_font
 
 def handle_events():
     event_list = get_events()
