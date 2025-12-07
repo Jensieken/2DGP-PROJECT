@@ -34,12 +34,16 @@ def _load_magic_frames():
 class MagicEffect:
 
     def __init__(self, x, y, face_dir=1, damage=None, spawn_hit=True, hit_w=120, hit_h=120):
-        self.x = x
-        self.y = y
+
+        hand_offset_x = 200
+        hand_offset_y = 25
+
+        self.x = x + face_dir * hand_offset_x
+        self.y = y + hand_offset_y
         self.face_dir = face_dir
         self.frames = _load_magic_frames()
         self.frame_index = 0.0
-        # 초당 프레임 재생 속도 (원하면 조절)
+
         self.fps = 12.0
         self.playing = True
         self.spawn_hit = spawn_hit
@@ -47,10 +51,11 @@ class MagicEffect:
         self.hit_w = hit_w
         self.hit_h = hit_h
 
-        # spawn collision hit once when created
         if self.spawn_hit and spawn_attack_hit is not None:
             try:
-                spawn_attack_hit(self.x, self.y, self.face_dir, damage=self.damage, w=self.hit_w, h=self.hit_h)
+                spawn_x = self.x - self.face_dir * 20
+                spawn_attack_hit(spawn_x, self.y, face_dir=self.face_dir,
+                                 damage=self.damage, w=self.hit_w * 2, h=self.hit_h * 2)
             except Exception:
                 pass
 
@@ -62,7 +67,6 @@ class MagicEffect:
         import game_framework
         dt = game_framework.frame_time
         if not self.frames:
-            # no frames -> remove immediately
             self._kill()
             return
         self.frame_index += self.fps * dt
@@ -80,11 +84,14 @@ class MagicEffect:
             return
         fw = img.w
         fh = img.h
-        # 좌우 반전 처리
+
+        dw = fw * 3
+        dh = fh * 3
+
         if self.face_dir == 1:
-            img.clip_draw(0, 0, fw, fh, self.x, self.y)
+            img.clip_draw(0, 0, fw, fh, self.x, self.y, dw, dh)
         else:
-            img.clip_composite_draw(0, 0, fw, fh, 0, 'h', self.x, self.y, fw, fh)
+            img.clip_composite_draw(0, 0, fw, fh, 0, 'h', self.x, self.y, dw, dh)
 
     def _kill(self):
         try:
