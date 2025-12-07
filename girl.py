@@ -392,6 +392,11 @@ class Normal_Attack:
         self.timer = 0.0
         self.playing = False
 
+        self.in_air = False
+        self.velocity_y = 0.0
+        self.gravity = -2000.0
+        self.dir_on_jump = 0
+
     def enter(self, e):
         if e and e[0] == 'INPUT':
             event = e[1]
