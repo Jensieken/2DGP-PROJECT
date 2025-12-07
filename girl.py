@@ -347,6 +347,9 @@ class Fall:
 
         if not self.in_air:
             self.girl.dir = 0
+            if hasattr(self.girl, 'stop_after_jump'):
+
+                self.girl.stop_after_jump = False
         self.girl.frame = 0.0
         self.timer = 0.0
         self.playing = True
@@ -404,7 +407,19 @@ class Fall:
             if self.girl.y > ground_y + 1:
                 self.girl.state_machine.change_state(self.girl.FALL)
             else:
-                finish_to_idle_or_run(self.girl)
+                if hasattr(self.girl, 'stop_after_jump'):
+                    self.girl.stop_after_jump = False
+
+                if right_pressed and not left_pressed:
+                    self.girl.face_dir = 1
+                    self.girl.dir = 1
+                    self.girl.state_machine.change_state(self.girl.RUN)
+                elif left_pressed and not right_pressed:
+                    self.girl.face_dir = -1
+                    self.girl.dir = -1
+                    self.girl.state_machine.change_state(self.girl.RUN)
+                else:
+                    self.girl.state_machine.change_state(self.girl.IDLE)
 
     def draw(self):
         key = self.IMAGE_KEY
@@ -491,7 +506,19 @@ class Normal_Attack:
             if self.girl.y > ground_y + 1:
                 self.girl.state_machine.change_state(self.girl.FALL)
             else:
-                finish_to_idle_or_run(self.girl)
+                if hasattr(self.girl, 'stop_after_jump'):
+                    self.girl.stop_after_jump = False
+
+                if right_pressed and not left_pressed:
+                    self.girl.face_dir = 1
+                    self.girl.dir = 1
+                    self.girl.state_machine.change_state(self.girl.RUN)
+                elif left_pressed and not right_pressed:
+                    self.girl.face_dir = -1
+                    self.girl.dir = -1
+                    self.girl.state_machine.change_state(self.girl.RUN)
+                else:
+                    self.girl.state_machine.change_state(self.girl.IDLE)
 
     def draw(self):
         key = self.IMAGE_KEY
