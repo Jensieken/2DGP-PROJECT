@@ -620,6 +620,32 @@ class Magic:
             img.clip_composite_draw(frame * frame_w, 0, frame_w, frame_h, 0, 'h', self.girl.x, self.girl.y, frame_w,
                                     frame_h)
 
+class Death:
+    IMAGE_KEY = 'death'
+    def __init__(self, girl):
+        self.girl = girl
+
+    def enter(self, e):
+        self.girl.dir = 0
+        self.girl.frame = 0.0
+
+    def do(self):
+        pass
+
+    def exit(self, e):
+        pass
+
+    def draw(self):
+        img = self.girl.get_image(self.IMAGE_KEY)
+        if not img:
+            return
+        fw = img.w
+        fh = img.h
+        if self.girl.face_dir == 1:
+            img.clip_draw(0, 0, fw, fh, self.girl.x, self.girl.y)
+        else:
+            img.clip_composite_draw(0, 0, fw, fh, 0, 'h', self.girl.x, self.girl.y, fw, fh)
+
 
 class Girl:
 
@@ -632,8 +658,8 @@ class Girl:
             'falling': ResourceManager.load_image('falling', 'falling.png'),
             'fall': ResourceManager.load_image('fall', 'fall.png'),
             'normal_attack': ResourceManager.load_image('normal_attack', 'normal_attack.png'),
-
-            'magic': ResourceManager.load_image('magic', 'magic.png')
+            'magic': ResourceManager.load_image('magic', 'magic.png'),
+            'death': ResourceManager.load_image('death', 'death.png')
 
         }
 
@@ -653,7 +679,7 @@ class Girl:
         self.FALL = Fall(self)
         self.NORMAL_ATTACK = Normal_Attack(self)
         self.MAGIC = Magic(self)
-
+        self.DEATH = Death(self)
 
 
         transitions = {
@@ -688,7 +714,9 @@ class Girl:
             },
             self.NORMAL_ATTACK: {},
 
-            self.MAGIC: {}
+            self.MAGIC: {},
+
+            self.DEATH: {}
 
         }
 
@@ -753,5 +781,11 @@ class Girl:
                 self.x += -kb_dir * kb
                 self.stop_after_jump = True
                 print(f'Girl hit: hp={self.hp}')
+
+                if self.hp <= 0:
+                    try:
+                        self.state_machine.change_state(self.DEATH)
+                    except Exception:
+                        pass
         except Exception:
             pass
