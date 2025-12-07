@@ -20,8 +20,8 @@ IDLE_OFFSETS = {
 }
 
 NORMAL_ATTACK_OFFSET = (0, 20)
-STAB_OFFSET = (-50, 3)
-SPINE_OFFSET = (-50, 3)
+STAB_OFFSET = (15, 10)
+SPINE_OFFSET = (0, 26)
 
 def create_default_weapon_manager():
     manager = WeaponManager()
