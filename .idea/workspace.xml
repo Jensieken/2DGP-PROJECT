@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="18074a26-4298-4809-8430-1dec0f550f4c" name="Changes" comment="." />
+    <list default="true" id="18074a26-4298-4809-8430-1dec0f550f4c" name="Changes" comment=".">
+      <change beforePath="$PROJECT_DIR$/build/target/EXE-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/target/EXE-00.toc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/goblin_slayer.exe" beforeDir="false" afterPath="$PROJECT_DIR$/dist/goblin_slayer.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target.spec" beforeDir="false" afterPath="$PROJECT_DIR$/target.spec" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
