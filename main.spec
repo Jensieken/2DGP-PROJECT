@@ -1,5 +1,8 @@
 # -*- mode: python ; coding: utf-8 -*-
+import os
+import pico2d
 
+sdl2dll_path = os.getenv('PYSDL2_DLL_PATH')
 
 a = Analysis(
     ['main.py'],
@@ -22,7 +25,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='main',
+    name='goblin_slayer',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
