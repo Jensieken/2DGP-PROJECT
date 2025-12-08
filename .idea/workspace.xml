@@ -5,9 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="18074a26-4298-4809-8430-1dec0f550f4c" name="Changes" comment=".">
-      <change beforePath="$PROJECT_DIR$/build/target/EXE-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/target/EXE-00.toc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/goblin_slayer.exe" beforeDir="false" afterPath="$PROJECT_DIR$/dist/goblin_slayer.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target.spec" beforeDir="false" afterPath="$PROJECT_DIR$/target.spec" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/weapon_image/10프레임-2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/weapon_image/11-1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/weapon_image/11프레임-2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/weapon_image/14프레임.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/weapon_image/2-1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/weapon_image/2프레임-2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/weapon_image/2프레임-3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/weapon_image/3프레임-1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/weapon_image/3프레임-2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/weapon_image/4프레임-1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/weapon_image/4프레임-2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/weapon_image/6프레임.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/weapon_image/7프레임-2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/weapon_image/7프레임-3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/weapon_image/7프레임-4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/weapon_image/8프레임-1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/weapon_image/9프레임.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/weapon_image/spr_pc_1_3u_w_10101_1_0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/weapon_image/spr_pc_1_5s2_w_10101_0_0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/weapon_image/spr_pc_1_9_w_10101_1_0.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -444,7 +461,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765194878660</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary=".">
+      <option name="closed" value="true" />
+      <created>1765198341781</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1765198341781</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
