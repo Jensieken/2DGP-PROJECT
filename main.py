@@ -1,3 +1,6 @@
+import os
+os.environ['PYSDL2_DLL_PATH'] = os.path.dirname(os.path.abspath(__file__))
+
 from pico2d import open_canvas, delay, close_canvas
 import game_framework
 
